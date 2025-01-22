@@ -1,6 +1,6 @@
-﻿namespace DifySharp.KnowledgeBase.KnowledgeBase;
+﻿namespace DifySharp.KnowledgeBase.Dataset;
 
-public record KnowledgeBase(
+public record Dataset(
     string  Id,
     string  Name,
     string? Description,

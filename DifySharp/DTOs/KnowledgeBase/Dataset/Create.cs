@@ -1,4 +1,4 @@
-﻿namespace DifySharp.KnowledgeBase.KnowledgeBase;
+﻿namespace DifySharp.KnowledgeBase.Dataset;
 
 public record Create
 {
