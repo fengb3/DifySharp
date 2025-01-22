@@ -1,0 +1,41 @@
+# Build and Object Folders
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# .NET Specific
+*.dll
+*.pdb
+*.cache
+*.exe
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet Packages
+*.nupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Test Results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
