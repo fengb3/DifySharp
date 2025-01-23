@@ -40,4 +40,4 @@ TestResults/
 ehthumbs.db
 Thumbs.db
 
-/DifySharp.Test/TestEnvironmentVariables.json
+#/DifySharp.Test/TestEnvironmentVariables.json
