@@ -1,21 +1,27 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using DifySharp;
 using Microsoft.Extensions.Options;
 using WebApiClientCore.Extensions.OAuths;
-// ReSharper disable once CheckNamespace
+using DifySharp;
 using DifySharp.Apis;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddDifySdk(this IServiceCollection services)
+    public static IServiceCollection AddDifySdk(this IServiceCollection services,
+        Action<DifyClientOptions>                                       configOptions)
     {
+        services.AddOptions<DifyClientOptions>()
+            .Configure(configOptions).Services
+            .ConfigureDifyKnowledgeApi()
+            ;
+
         return services;
     }
 
-    public static IServiceCollection ConfigDifyKnowledgeApi(this IServiceCollection services)
+    private static IServiceCollection ConfigureDifyKnowledgeApi(this IServiceCollection services)
     {
         services
             .AddHttpApi<IKnowledgeBaseApi>((apiOptions, sp) =>
@@ -31,19 +37,29 @@ public static class DependencyInjection
                 apiOptions.JsonSerializeOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
                 apiOptions.JsonSerializeOptions.Converters.Add(
                     new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
+                
+                apiOptions.KeyValueSerializeOptions.IgnoreNullValues = true;
+
+                apiOptions.UseLogging = true;
             })
+            // .ConfigureHttpClient((sp, client) =>
+            // {
+            //     var options = sp.GetRequiredService<IOptions<DifyClientOptions>>().Value;
+            //     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {options.KnowledgeBaseApiKey}");
+            // })
             ;
 
-        services.AddTokenProvider<IKnowledgeBaseApi>(sp =>
-        {
-            var options = sp.GetRequiredService<IOptions<DifyClientOptions>>().Value;
-
-            return Task.FromResult(new TokenResult
+        services
+            .AddTokenProvider<IKnowledgeBaseApi>(async sp =>
             {
-                Access_token = options.KnowledgeBaseApiKey,
-                Expires_in   = 60 * 60 * 24, // one
-            })!;
-        });
+                var options = sp.GetRequiredService<IOptions<DifyClientOptions>>().Value;
+
+                return await Task.FromResult(new TokenResult
+                {
+                    Access_token = options.KnowledgeBaseApiKey,
+                    Expires_in   = 60 * 60 * 24, // one
+                })!;
+            });
 
         return services;
     }

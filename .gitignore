@@ -39,3 +39,5 @@ TestResults/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+/DifySharp.Test/TestEnvironmentVariables.json

@@ -15,12 +15,12 @@ public record Create
     /// <link>https://cloud.dify.ai/datasets?category=api#create_empty_dataset</link>
     public record RequestBody(
         string          Name,
-        string?         Description,
-        IndexTechnique? IndexTechnique,
-        Permission      Permission,
-        Provider?       Provider,
-        string?         ExternalKnowledgeApiId,
-        string?         ExternalKnowledgeId
+        string?         Description            = null,
+        IndexTechnique? IndexTechnique         = null,
+        Permission      Permission             = Permission.AllTeamMembers,
+        Provider?       Provider               = null,
+        string?         ExternalKnowledgeApiId = null,
+        string?         ExternalKnowledgeId    = null
     );
 
 
