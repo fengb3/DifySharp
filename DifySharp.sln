@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifySharp.Test", "DifySharp.Test\DifySharp.Test.csproj", "{CDBC31BA-914F-4127-A56B-9EDE44EA864B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifySharp.Demo.AspNet", "DifySharp.Demo.AspNet\DifySharp.Demo.AspNet.csproj", "{5AC346C7-0BD1-45E2-BF00-49AAC2A66423}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{CDBC31BA-914F-4127-A56B-9EDE44EA864B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDBC31BA-914F-4127-A56B-9EDE44EA864B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDBC31BA-914F-4127-A56B-9EDE44EA864B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AC346C7-0BD1-45E2-BF00-49AAC2A66423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AC346C7-0BD1-45E2-BF00-49AAC2A66423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AC346C7-0BD1-45E2-BF00-49AAC2A66423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AC346C7-0BD1-45E2-BF00-49AAC2A66423}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

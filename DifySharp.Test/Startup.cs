@@ -2,21 +2,28 @@
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.DependencyInjection.Logging;
 
+// using Xunit.DependencyInjection.Logging;
+
 namespace DifySharp.Test;
 
 public class Startup
 {
+
+    public static IServiceProvider ServiceProvider { get; set; }
+    
     public void ConfigureServices(IServiceCollection services)
     {
         // Directory.GetCurrentDirectory() + "/TestSettings.Local.json";
-        ReadEnviromnetVariables();
+        ReadEnvironmentVariables();
 
         var knowledgeApiKey = Environment.GetEnvironmentVariable("KNOWLEDGE_BASE_API_KEY");
         services.AddDifySdk(option => { option.KnowledgeBaseApiKey = knowledgeApiKey!; });
         services.AddLogging(lb => lb.AddXunitOutput());
+
+        ServiceProvider = services.BuildServiceProvider();
     }
 
-    private void ReadEnviromnetVariables()
+    private static void ReadEnvironmentVariables()
     {
         var settingFilePath = Path.Join(Directory.GetCurrentDirectory(), "TestEnvironmentVariables.json");
 

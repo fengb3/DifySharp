@@ -3,7 +3,7 @@
 /// <summary>
 /// index mode
 /// </summary>
-public enum IndexTechnique
+public enum IndexingTechnique
 {
     /// <summary>
     /// High quality

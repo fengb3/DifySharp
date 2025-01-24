@@ -3,7 +3,7 @@ using DifySharp.KnowledgeBase.Dataset;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Xunit.DependencyInjection.Logging;
+// using Xunit.DependencyInjection.Logging;
 
 namespace DifySharp.Test.Apis;
 

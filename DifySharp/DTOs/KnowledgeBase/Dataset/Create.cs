@@ -14,13 +14,13 @@ public record Create
     /// <param name="ExternalKnowledgeId">External knowledge ID (optional)</param>
     /// <link>https://cloud.dify.ai/datasets?category=api#create_empty_dataset</link>
     public record RequestBody(
-        string          Name,
-        string?         Description            = null,
-        IndexTechnique? IndexTechnique         = null,
-        Permission      Permission             = Permission.AllTeamMembers,
-        Provider?       Provider               = null,
-        string?         ExternalKnowledgeApiId = null,
-        string?         ExternalKnowledgeId    = null
+        string             Name,
+        string?            Description            = null,
+        IndexingTechnique? IndexTechnique         = null,
+        Permission         Permission             = Permission.AllTeamMembers,
+        Provider?          Provider               = null,
+        string?            ExternalKnowledgeApiId = null,
+        string?            ExternalKnowledgeId    = null
     );
 
 

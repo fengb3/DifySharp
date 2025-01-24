@@ -16,11 +16,11 @@ public record CreateByFile
     /// <param name="DocLanguage"></param>
     /// <param name="ProcessRule"></param>
     public record Data(
-        string?        OriginalDocumentId,
-        IndexTechnique IndexTechnique,
-        DocForm        DocForm,
-        string         DocLanguage,
-        ProcessRule    ProcessRule
+        string?           OriginalDocumentId,
+        IndexingTechnique IndexTechnique,
+        DocForm           DocForm,
+        string            DocLanguage,
+        ProcessRule       ProcessRule
     );
 
     /// <summary>

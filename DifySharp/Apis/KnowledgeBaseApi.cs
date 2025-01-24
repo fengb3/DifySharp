@@ -6,7 +6,7 @@ using WebApiClientCore;
 
 namespace DifySharp.Apis
 {
-    [LoggingFilter(Enable = true)]
+    [LoggingFilter]
     [OAuthToken]
     public interface IKnowledgeBaseApi : IDatasetApi, IDocumentApi, IChunkApi;
 }

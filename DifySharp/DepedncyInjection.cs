@@ -39,7 +39,6 @@ public static class DependencyInjection
                     new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
                 
                 apiOptions.KeyValueSerializeOptions.IgnoreNullValues = true;
-
                 apiOptions.UseLogging = true;
             })
             // .ConfigureHttpClient((sp, client) =>
