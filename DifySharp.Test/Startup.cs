@@ -17,7 +17,7 @@ public class Startup
         ReadEnvironmentVariables();
 
         var knowledgeApiKey = Environment.GetEnvironmentVariable("KNOWLEDGE_BASE_API_KEY");
-        services.AddDifySdk(option => { option.KnowledgeBaseApiKey = knowledgeApiKey!; });
+        services.AddDifySharp(option => { option.KnowledgeBaseApiKey = knowledgeApiKey!; });
         services.AddLogging(lb => lb.AddXunitOutput());
 
         ServiceProvider = services.BuildServiceProvider();

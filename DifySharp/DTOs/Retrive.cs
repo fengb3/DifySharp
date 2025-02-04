@@ -1,7 +1,6 @@
 ﻿namespace AlertSuggestion.Lib.DifyClient.DTOs.KnowledgeBase;
 
 public record Retrieve
-
 {
     #region Request
 

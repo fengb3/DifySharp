@@ -1,4 +1,5 @@
-﻿using DifySharp.KnowledgeBase.Chunk;
+﻿using DifySharp.Attributes;
+using DifySharp.KnowledgeBase.Chunk;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using WebApiClientCore.Attributes;
@@ -7,7 +8,8 @@ using WebApiClientCore;
 namespace DifySharp.Apis
 {
 	[LoggingFilter]
-	[OAuthToken]
+	// [OAuthToken]
+	[DifyAuth]
 	public interface IKnowledgeBaseApi : IDatasetApi, IDocumentApi, IChunkApi;
 }
 

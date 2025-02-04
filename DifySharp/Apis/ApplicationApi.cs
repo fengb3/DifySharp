@@ -4,7 +4,7 @@ using WebApiClientCore.Parameters;
 
 namespace DifySharp.Apis;
 
-public interface IApplicationAppApi : ICompletionsAppApi, IChatAppApi
+public interface IApplicationApi : ICompletionApi, IChatApi
 {
 	[HttpPost("files/upload")]
 	public Task<HttpResponseMessage> PostFilesUpload(
@@ -37,13 +37,25 @@ public interface IApplicationAppApi : ICompletionsAppApi, IChatAppApi
 /// Completion App API
 /// The text generation application offers non-session support and is ideal for translation, article writing, summarization AI, and more.
 /// </summary>
-public interface ICompletionsAppApi
+public interface ICompletionApi
 {
+	/// <summary>
+	/// # Create Completion Message
+	/// Send a request to the text generation application.
+	/// </summary>
+	/// <param name="requestBody"></param>
+	/// <returns></returns>
 	[HttpPost("/completion-messages")]
 	public Task<HttpResponseMessage> PostCompletionMessages(
 		[JsonContent] object requestBody
 	);
 
+	/// <summary>
+	/// # Stop Generate
+	/// Only supported in streaming mode.
+	/// </summary>
+	/// <param name="taskId"></param>
+	/// <returns></returns>
 	[HttpPost("/completion-messages/taskId/stop")]
 	public Task<HttpResponseMessage> PostCompletionsMessagesStop(
 		string taskId
@@ -54,7 +66,7 @@ public interface ICompletionsAppApi
 /// Chat App API
 /// Chat applications support session persistence, allowing previous chat history to be used as context for responses. This can be applicable for chatbot, customer service AI, etc.
 /// </summary>
-public interface IChatAppApi
+public interface IChatApi
 {
 	[HttpPost("/chat-messages")]
 	public Task<HttpResponseMessage> PostChatMessages(
@@ -102,7 +114,7 @@ public interface IChatAppApi
 	);
 }
 
-public interface IWorkflowAppApi
+public interface IWorkflowApi
 {
 	[HttpPost("/workflows/run")]
 	public Task<HttpResponseMessage> PostWorkflowsRun(
