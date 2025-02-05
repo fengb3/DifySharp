@@ -12,7 +12,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        // Directory.GetCurrentDirectory() + "/TestSettings.Local.json";
         ReadEnvironmentVariables();
 
         var knowledgeApiKey = Environment.GetEnvironmentVariable("KNOWLEDGE_BASE_API_KEY");

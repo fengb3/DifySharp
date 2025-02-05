@@ -1,3 +1,4 @@
+using DifySharp.Apis;
 using DifySharp.KnowledgeBase;
 using DifySharp.KnowledgeBase.Chunk;
 using DifySharp.KnowledgeBase.Dataset;
@@ -13,119 +14,111 @@ namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 
 public class ChunkApiTestFixture : KnowledgeBaseApiTestFixture
 {
-    public Dataset  Dataset  { get; private set; }
-    public Document Document { get; set; }
+	public Dataset  Dataset  { get; private set; }
+	public Document Document { get; set; }
 
-    private KnowledgeBaseClient Client { get; set; }
+	public KnowledgeBaseClient Client { get; set; }
 
-    public ChunkApiTestFixture() : base()
-    {
-        Client = Services.GetRequiredService<KnowledgeBaseClient>();
+	public ChunkApiTestFixture() : base()
+	{
+		Client = ServiceProvider.GetRequiredKeyedService<KnowledgeBaseClient>("knowledge");
 
-        // create a dataset
-        var uuid = Guid.NewGuid().ToString("N")[..6];
-        Dataset =
-            Client.PostCreateDatasetAsync(new DatasetCreate.RequestBody(Name: $"Test Dataset {uuid}"))
-                .GetAwaiter()
-                .GetResult();
+		// create a dataset
+		var uuid = Guid.NewGuid().ToString("N")[..6];
+		Dataset =
+			Client.PostCreateDatasetAsync(new DatasetCreate.RequestBody(Name: $"Chunk Api Test Dataset {uuid}"))
+			      .GetAwaiter()
+			      .GetResult();
 
-        Assert.NotNull(Dataset);
+		Assert.NotNull(Dataset);
 
-        // crate a document
-        var createDocRequestBody = new CreateByText.RequestBody(
-            $"Test Document {uuid}",
-            "Test Content",
-            IndexingTechnique.Economy,
-            DocForm.TextModel,
-            "",
-            new ProcessRule(
-                "automatic",
-                new Rules(
-                    [
-                        new PreProcessingRule(
-                            "remove_extra_spaces",
-                            true
-                        ),
-                        new PreProcessingRule(
-                            "remove_urls_emails",
-                            true
-                        )
-                    ],
-                    new Segmentation(
-                        "\n\n",
-                        1000
-                    ),
-                    "paragraph",
-                    new SubChunkSegmentation(
-                        "\n\n",
-                        1000,
-                        200
-                    )
-                )
-            ),
-            new CreateByText.RetrievalModel(
-                CreateByText.SearchMethod.HybridSearch,
-                false,
-                new CreateByText.RerankingModel(
-                    "",
-                    ""
-                ),
-                4,
-                false,
-                0.9f
-            ),
-            "",
-            ""
-        );
+		// crate a document
+		var createDocRequestBody = new CreateByText.RequestBody(
+			$"Chunk Api Test Document {uuid}",
+			"Test Content \n\n Test Content \n\n Test Content",
+			IndexingTechnique.Economy,
+			DocForm.TextModel,
+			"",
+			new ProcessRule(
+				"automatic",
+				new Rules(
+					[
+						new PreProcessingRule(
+							"remove_extra_spaces",
+							true
+						),
+						new PreProcessingRule(
+							"remove_urls_emails",
+							true
+						)
+					],
+					new Segmentation(
+						"\n\n",
+						1000
+					),
+					"paragraph",
+					new SubChunkSegmentation(
+						"\n\n",
+						1000,
+						200
+					)
+				)
+			),
+			new CreateByText.RetrievalModel(
+				CreateByText.SearchMethod.HybridSearch,
+				false,
+				new CreateByText.RerankingModel(
+					"",
+					""
+				),
+				4,
+				false,
+				0.9f
+			),
+			"",
+			""
+		);
 
-        Document = Client.PostCreateDocumentByTextAsync(
-                Dataset.Id,
-                createDocRequestBody
-            )
-            .GetAwaiter()
-            .GetResult().Document;
+		Document = Client.PostCreateDocumentByTextAsync(
+			                  Dataset.Id,
+			                  createDocRequestBody
+		                  )
+		                 .GetAwaiter()
+		                 .GetResult().Document;
 
-        Assert.NotNull(Document);
-    }
+		Assert.NotNull(Document);
+	}
 
-    public override void Dispose()
-    {
-        // var client = Services.GetRequiredService<KnowledgeBaseClient>();
-        Client.DeleteDataset(Dataset.Id).GetAwaiter().GetResult();
-        Client.DeleteDocument(Dataset.Id, Document.Id).GetAwaiter().GetResult();
-        Client.Dispose();
-        base.Dispose();
-    }
+	public override void Dispose()
+	{
+		Client.DeleteDataset(Dataset.Id).GetAwaiter().GetResult();
+		Client.Dispose();
+		base.Dispose();
+	}
 }
 
 [TestSubject(typeof(IChunkApi))]
 public class ChunkApiTest(
-    ChunkApiTestFixture      fixture,
-    ILogger<DocumentApiTest> logger,
-    KnowledgeBaseClient      client
+	ChunkApiTestFixture      fixture,
+	ILogger<DocumentApiTest> logger
 ) : IClassFixture<ChunkApiTestFixture>
 {
-    public Dataset  Dataset  => fixture.Dataset;
-    public Document Document => fixture.Document;
+	public Dataset  Dataset  => fixture.Dataset;
+	public Document Document => fixture.Document;
+
+	public IKnowledgeBaseApi Client => fixture.Client;
 
 
-    [Fact]
-    public async Task TestCreateChunk()
-    {
-        Assert.NotNull(Dataset);
-        Assert.NotNull(Document);
+	[Fact]
+	public async Task TestGetChunk()
+	{
+		Assert.NotNull(Dataset);
+		Assert.NotNull(Document);
+		Assert.NotNull(Client);
 
-        // var response = await api.PostCreateSegmentAsync(
-        // 	Dataset.Id,
-        // 	Document.Id,
-        // 	new ChunkCreate.RequestBody(
-        // 		new ChunkCreate.Segment("chunk1", null, "keyword1", "keyword2"),
-        // 		new ChunkCreate.Segment("chunk3", null, "keyword2", "keyword8"),
-        // 		new ChunkCreate.Segment("chunk5", null, "keyword4", "keyword5"),
-        // 		new ChunkCreate.Segment("chunk7", null, "keyword5", "keyword7")
-        // 	));
-        //
-        // Assert.NotNull(response);
-        // Assert.NotEmpty(response.Data);
-    }
+		// var response = await Client.GetSegments(Dataset.Id, Document.Id);
+		//
+		// Assert.NotNull(response);
+
+	}
 }

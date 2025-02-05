@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using DifySharp.ApiKey;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using WebApiClientCore;
 using WebApiClientCore.Attributes;
 
@@ -17,8 +18,12 @@ public class DifyAuthAttribute : ApiFilterAttribute
 		return Task.CompletedTask;
 	}
 
-	public override Task OnResponseAsync(ApiResponseContext context)
+	public override async Task OnResponseAsync(ApiResponseContext context)
 	{
-		return Task.CompletedTask;
+		// var logger       = context.HttpContext.ServiceProvider.GetRequiredService<ILogger<DifyAuthAttribute>>();
+		// var responseBody = await context.HttpContext.ResponseMessage.Content?.ReadAsStringAsync();
+		// // context.HttpContext.ResponseMessage.Content.
+		
+		// logger.LogInformation(responseBody);
 	}
 }

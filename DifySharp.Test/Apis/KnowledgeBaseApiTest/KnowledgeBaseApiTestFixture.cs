@@ -6,11 +6,16 @@ namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 
 public abstract class KnowledgeBaseApiTestFixture : IDisposable
 {
-    protected readonly IServiceProvider Services = Startup.ServiceProvider;
+	protected IServiceProvider ServiceProvider => _scope.ServiceProvider;
+	private   IServiceScope    _scope;
 
-    public virtual void Dispose()
-    {
-        // TODO release managed resources here
-        
-    }
+	public KnowledgeBaseApiTestFixture()
+	{
+		_scope = Startup.ServiceProvider.CreateScope();
+	}
+
+	public virtual void Dispose()
+	{
+		_scope.Dispose();
+	}
 }

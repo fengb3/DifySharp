@@ -1,6 +1,6 @@
 ﻿namespace DifySharp.KnowledgeBase.Chunk;
 
-public abstract record Chunk(
+public record Chunk(
     string       Id,
     int          Position,
     string       DocumentId,
