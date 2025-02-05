@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace DifySharp.Test;
 
-[TestSubject(typeof(DifyClient))]
+[TestSubject(typeof(KnowledgeBaseClient))]
 public class DifyClientTest
 {
 	[Fact]

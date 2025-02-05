@@ -8,16 +8,21 @@ namespace DifySharp.Test;
 
 public class Startup
 {
-
     public static IServiceProvider ServiceProvider { get; set; }
-    
+
     public void ConfigureServices(IServiceCollection services)
     {
         // Directory.GetCurrentDirectory() + "/TestSettings.Local.json";
         ReadEnvironmentVariables();
 
         var knowledgeApiKey = Environment.GetEnvironmentVariable("KNOWLEDGE_BASE_API_KEY");
-        services.AddDifySharp(option => { option.KnowledgeBaseApiKey = knowledgeApiKey!; });
+        services.AddDifySharp(option =>
+        {
+            option.Secrets =
+            [
+                new DifyApiSecret(knowledgeApiKey!, "knowledge", DifyApiType.KNOWLEDGE_BASE)
+            ];
+        });
         services.AddLogging(lb => lb.AddXunitOutput());
 
         ServiceProvider = services.BuildServiceProvider();
@@ -34,7 +39,7 @@ public class Startup
         {
             CommentHandling = JsonCommentHandling.Skip
         });
-        
+
         var variables = document.RootElement.EnumerateObject();
 
         foreach (var variable in variables)

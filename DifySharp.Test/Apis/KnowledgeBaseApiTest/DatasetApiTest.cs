@@ -1,15 +1,22 @@
-using DifySharp.Apis;
 using DifySharp.KnowledgeBase.Dataset;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-// using Xunit.DependencyInjection.Logging;
 
-namespace DifySharp.Test.Apis;
 
-[TestSubject(typeof(IDatasetApi))]
+namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
+
+public class DatasetApiTestFixture : KnowledgeBaseApiTestFixture
+{
+}
+
+[TestSubject(typeof(KnowledgeBaseClient))]
 [TestCaseOrderer("DifySharp.Test.TestPriorityOrder", "DifySharp.Test")]
-public class DatasetApiTest(IKnowledgeBaseApi api, ILogger<DatasetApiTest> logger)
+public class DatasetApiTest(
+    DatasetApiTestFixture                                fixture,
+    ILogger<DatasetApiTest>                              logger,
+    [FromKeyedServices("knowledge")] KnowledgeBaseClient client
+) : IClassFixture<DatasetApiTestFixture>
 {
     // public class Startup
     // {
@@ -27,7 +34,7 @@ public class DatasetApiTest(IKnowledgeBaseApi api, ILogger<DatasetApiTest> logge
     [Fact, TestPriority(1)]
     public async Task TestCreateDataset_ShouldHaveDatasetInResponse()
     {
-        var response = await api.PostCreateDatasetAsync(
+        var response = await client.PostCreateDatasetAsync(
             new Create.RequestBody(
                 _datasetName,
                 $"{_datasetName} this is a test dataset created by {GetType().FullName}"
@@ -44,7 +51,7 @@ public class DatasetApiTest(IKnowledgeBaseApi api, ILogger<DatasetApiTest> logge
     [Fact, TestPriority(2)]
     public async Task TextListDatasets_ShouldHaveDatasetInResponse()
     {
-        var response = await api.GetDatasets();
+        var response = await client.GetDatasets();
 
         Assert.NotNull(_datasetId);
         Assert.Contains(response.Data, d => d.Id == _datasetId);
@@ -58,6 +65,6 @@ public class DatasetApiTest(IKnowledgeBaseApi api, ILogger<DatasetApiTest> logge
         Assert.NotNull(_datasetId);
         Assert.NotEmpty(_datasetId);
 
-        await api.DeleteDataset(_datasetId);
+        await client.DeleteDataset(_datasetId);
     }
 }

@@ -8,12 +8,6 @@ public abstract class KnowledgeBaseApiTestFixture : IDisposable
 {
     protected readonly IServiceProvider Services = Startup.ServiceProvider;
 
-
-    // public KnowledgeBaseApiTestFixture()
-    // {
-    //     // global set up here
-    // }
-
     public virtual void Dispose()
     {
         // TODO release managed resources here
