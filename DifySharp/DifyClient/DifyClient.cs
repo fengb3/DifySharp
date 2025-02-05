@@ -197,6 +197,11 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
 	{
 	}
 
+	public CompletionClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
+		new DifyClient<ICompletionApi>(new DifyApiSecret(apiKey), baseUrl))
+	{
+	}
+
 	#region ApiCalling
 
 	/// <inheritdoc/>
@@ -213,6 +218,11 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
 public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
 {
 	internal ChatClient(DifyClient<IChatApi> client) : base(client)
+	{
+	}
+
+	public ChatClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
+		new DifyClient<IChatApi>(new DifyApiSecret(apiKey), baseUrl))
 	{
 	}
 
@@ -253,6 +263,11 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
 public class WorkflowClient : DifyClientProxy<IWorkflowApi>, IWorkflowApi
 {
 	internal WorkflowClient(DifyClient<IWorkflowApi> client) : base(client)
+	{
+	}
+
+	public WorkflowClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
+		new DifyClient<IWorkflowApi>(new DifyApiSecret(apiKey), baseUrl))
 	{
 	}
 
