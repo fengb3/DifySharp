@@ -4,17 +4,32 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Version>0.0.2-alpha</Version>
+        <Authors>fengb3</Authors>
+        <RepositoryUrl>https://github.com/fengb3/DifySharp.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/fengb3/DifySharp</PackageProjectUrl>
+        <!--        <PackageIconUrl></PackageIconUrl>-->
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <Description>C# SDK for dify</Description>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="WebApiClientCore" Version="2.1.5" />
-      <PackageReference Include="WebApiClientCore.Extensions.OAuths" Version="2.1.5" />
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\LICENSE" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DTOs\Application\Chat\" />
-      <Folder Include="DTOs\Application\Completions\" />
-      <Folder Include="DTOs\Application\Workflow\" />
+        <PackageReference Include="WebApiClientCore" Version="2.1.5"/>
+        <PackageReference Include="WebApiClientCore.Extensions.OAuths" Version="2.1.5"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="DTOs\Application\Chat\"/>
+        <Folder Include="DTOs\Application\Completions\"/>
+        <Folder Include="DTOs\Application\Workflow\"/>
     </ItemGroup>
 
 </Project>
