@@ -5,10 +5,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DifySharp\DifySharp.csproj" />
+        <ProjectReference Include="..\DifySharp\DifySharp.csproj"/>
     </ItemGroup>
 
 </Project>
