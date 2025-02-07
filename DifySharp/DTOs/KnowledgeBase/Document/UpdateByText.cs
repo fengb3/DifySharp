@@ -21,6 +21,6 @@ public record UpdateByText
     /// <param name="Batch"></param>
     public record ResponseBody(
         Document Document,
-        string                                     Batch
+        string   Batch
     );
 }

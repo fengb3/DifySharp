@@ -1,5 +1,4 @@
-﻿
-namespace DifySharp.KnowledgeBase.Document;
+﻿namespace DifySharp.KnowledgeBase.Document;
 
 public record CreateByFile
 {
@@ -30,6 +29,6 @@ public record CreateByFile
     /// <param name="Batch"></param>
     public record ResponseBody(
         Document Document,
-        string                                     Batch
+        string   Batch
     );
 }
