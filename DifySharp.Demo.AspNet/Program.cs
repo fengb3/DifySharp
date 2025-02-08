@@ -1,8 +1,12 @@
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using DifySharp;
 using DifySharp.Apis;
+using DifySharp.Chat.ChatMessages;
+using DifySharp.Extensions;
 using DifySharp.KnowledgeBase;
-using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,16 +14,18 @@ builder.Services.AddDifySharp(o =>
 {
     o.Secrets =
     [
-        new DifyApiSecret("", "", "")
+        new DifyApiSecret("<your-knowledge-base-secret>", "knowledge", DifyApiType.KNOWLEDGE_BASE),
+        new DifyApiSecret("<your-chat-application-secret>", "chat", DifyApiType.CHAT)
     ];
 }); // add you api key here
 
 var app = builder.Build();
 
-app.MapGet("/", async (IKnowledgeBaseApi api) =>
+app.MapGet("/", async (IServiceProvider sp) =>
 {
+    var api = sp.GetRequiredKeyedService<KnowledgeBaseClient>("knowledge"); // get client instance by name in configuration
+
     var uuid = Guid.NewGuid().ToString("N")[..6];
-    // var dataset = await api.PostCreateDatasetAsync(new Create.RequestBody(Name: $"test-dataset-{uuid}"));
 
     var response = await api.PostCreateDocumentByTextAsync("", // add a dataset id here
         new CreateByText.RequestBody(
@@ -76,18 +82,23 @@ app.MapGet("/", async (IKnowledgeBaseApi api) =>
     };
 });
 
-app.MapGet("/test", async (IServiceProvider sp) =>
+app.MapGet("/ChatApiDemo/ChatMessagesBlocking", async (IServiceProvider sp) =>
 {
-    var api  = sp.GetKeyedService<IApplicationApi>("something thing");
-    var api2 = sp.GetKeyedService<IApplicationApi>("something thing2");
+    // get chat client instance by name in configuration
+    var client = sp.GetRequiredKeyedService<ChatClient>("chat"); 
+    
+    // send chat message in blocking mode
+    var response = await client.PostChatMessageBlocking(new ChatMessage.RequestBody
+    {
+        Query        = "ping",
+        ResponseMode = ChatMessage.ResponseMode.Blocking,
+        User         = "test-user"
+    });
 
-    if (api == null || api2 == null) return null;
-
-    var responseMessage = await api.GetInfo();
-
-    var content = responseMessage.Content.ReadAsStringAsync();
-
-    return new { something = "", content };
+    return new
+    {
+        response.Answer,
+    };
 });
 
 app.Run();

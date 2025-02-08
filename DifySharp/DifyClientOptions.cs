@@ -6,7 +6,7 @@ public class DifyClientOptions
     /// base url of a dify api server, defaults to https://api.dify.ai/v1
     /// </summary>
     public string BaseUrl { get; set; } = "https://api.dify.ai/v1";
-    
+
     /// <summary>
     /// a collection of <see cref="DifyApiSecret"/>, for multiple dify applications and knowledge bases management.
     /// </summary>
@@ -57,19 +57,19 @@ public static class DifyApiType
     /// knowledge base api type
     /// </summary>
     public const string KNOWLEDGE_BASE = "KNOWLEDGE_BASE";
-    
+
     /// <summary>
     /// completion api type
     /// </summary>
-    public const string COMPLETION     = "COMPLETION";
-    
+    public const string COMPLETION = "COMPLETION";
+
     /// <summary>
     /// chat api type
     /// </summary>
-    public const string CHAT           = "CHAT";
-    
+    public const string CHAT = "CHAT";
+
     /// <summary>
     /// workflow api type
     /// </summary>
-    public const string WORKFLOW       = "WORKFLOW";
+    public const string WORKFLOW = "WORKFLOW";
 }

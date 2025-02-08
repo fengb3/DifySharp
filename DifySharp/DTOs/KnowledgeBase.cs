@@ -7,4 +7,3 @@ public record ErrorResponse(string Code, string Message, string Status) : BaseRe
 // public class KnowledgeBase
 // {
 // }
-

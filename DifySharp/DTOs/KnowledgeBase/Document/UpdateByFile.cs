@@ -19,7 +19,7 @@ public class UpdateByFile
         string?      Text,
         ProcessRule? ProcessRule
     );
-    
+
     /// <summary>
     /// response body
     /// </summary>
@@ -27,6 +27,6 @@ public class UpdateByFile
     /// <param name="Batch"></param>
     public record ResponseBody(
         Document Document,
-        string                                     Batch
+        string   Batch
     );
 }

@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DifySharp\DifySharp.csproj" />
+        <ProjectReference Include="..\DifySharp\DifySharp.csproj"/>
     </ItemGroup>
 
 </Project>
