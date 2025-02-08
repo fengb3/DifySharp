@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
-        
+     
     - name: Get Version
       id: get_version
       run: echo "##[set-output name=VERSION;]$(grep -oPm1 "(?<=<Version>)[^<]+" DifySharp/DifySharp.csproj)"
