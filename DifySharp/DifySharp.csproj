@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>0.0.2-alpha</Version>
+        <Version>0.0.3-alpha</Version>
         <Authors>fengb3</Authors>
         <RepositoryUrl>https://github.com/fengb3/DifySharp.git</RepositoryUrl>
         <PackageProjectUrl>https://github.com/fengb3/DifySharp</PackageProjectUrl>

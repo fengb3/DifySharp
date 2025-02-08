@@ -1,6 +1,9 @@
 using DifySharp.ApiKey;
 using DifySharp.Apis;
-using DifySharp.KnowledgeBase.Chunk;
+using DifySharp.Chat.Application;
+using DifySharp.Chat.ChatMessages;
+using DifySharp.Chat.Conversations;
+using DifySharp.Chat.Messages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using Microsoft.Extensions.DependencyInjection;
@@ -81,7 +84,7 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
     }
 
     /// <summary>
-    /// Create a instance of <see cref="KnowledgeBaseClient"/> with the given api key and base url.
+    /// Create a instance of Dify <see cref="KnowledgeBaseClient"/> with the given api key and base url.
     /// </summary>
     /// <param name="apiKey">api key for dify knowledge base</param>
     /// <param name="baseUrl">base url of a dify server, default value: https://api.dify.ai/v1</param>
@@ -193,6 +196,11 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     {
     }
 
+    /// <summary>
+    /// Create a instance of Dify <see cref="CompletionClient"/> with the given api key and base url.
+    /// </summary>
+    /// <param name="apiKey">api key for dify completion application</param>
+    /// <param name="baseUrl">base url of a dify server, default value: https://api.dify.ai/v1</param>
     public CompletionClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
         new DifyClient<ICompletionApi>(new DifyApiSecret(apiKey), baseUrl))
     {
@@ -211,12 +219,17 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     #endregion
 }
 
-public class ChatClient : DifyClientProxy<IChatApi> //, IChatApi
+public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
 {
     internal ChatClient(DifyClient<IChatApi> client) : base(client)
     {
     }
 
+    /// <summary>
+    /// Create a instance of Dify <see cref="ChatClient"/> with the given api key and base url.
+    /// </summary>
+    /// <param name="apiKey">api key for dify chat application</param>
+    /// <param name="baseUrl">base url of a dify server, default value: https://api.dify.ai/v1</param>
     public ChatClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
         new DifyClient<IChatApi>(new DifyApiSecret(apiKey), baseUrl))
     {
@@ -224,34 +237,93 @@ public class ChatClient : DifyClientProxy<IChatApi> //, IChatApi
 
     #region ApiCalling
 
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> PostChatMessages(object requestBody) =>
-    // 	await Api.PostChatMessages(requestBody);
-    //
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> PostChatMessagesStop(string taskId, object requestBody) =>
-    // 	await Api.PostChatMessagesStop(taskId, requestBody);
-    //
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> GetMessagesSuggested(string messageId, string user) =>
-    // 	await Api.GetMessagesSuggested(messageId, user);
-    //
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> GetMessages(string conversationId, string user, string firstId,
-    //                                                    int    limit) =>
-    // 	await Api.GetMessages(conversationId, user, firstId, limit);
-    //
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> GetConversations(string user, string lastId, int limit, string sortBy) =>
-    // 	await Api.GetConversations(user, lastId, limit, sortBy);
-    //
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> DeleteConversations(string conversationId) =>
-    // 	await Api.DeleteConversations(conversationId);
-    //
-    // /// <inheritdoc/>
-    // public async Task<HttpResponseMessage> PostAudioToText(object requestBody) =>
-    // 	await Api.PostAudioToText(requestBody);
+    /// <inheritdoc />
+    public async Task<Basic.ResponseBody> GetInfo()
+    {
+        return await Api.GetInfo();
+    }
+
+    /// <inheritdoc />
+    public async Task<Parameters.ResponseBody> GetParameters()
+    {
+        return await Api.GetParameters();
+    }
+
+    /// <inheritdoc />
+    public async Task<Meta.ResponseBody> GetMeta()
+    {
+        return await Api.GetMeta();
+    }
+
+    /// <inheritdoc />
+    public async Task<Chat.Conversations.Get.ResponseBody> GetConversations(string user,         string? last_id = null,
+        int?                                                                       limit = null, string? sort_by = null)
+    {
+        return await Api.GetConversations(user, last_id, limit, sort_by);
+    }
+
+    /// <inheritdoc />
+    public async Task<Chat.Conversations.Delete.RequestBody> DeleteConversations(string conversationId,
+        Chat.Conversations.Delete.RequestBody                                           requestBody)
+    {
+        return await Api.DeleteConversations(conversationId, requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<Conversation> PostRenameConversation(string conversationId, Rename.RequestBody requestBody)
+    {
+        return await Api.PostRenameConversation(conversationId, requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostChatMessages(ChatMessage.RequestBody requestBody)
+    {
+        return await Api.PostChatMessages(requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<Stop.ResponseBody> PostChatMessagesStop(string taskId, Stop.RequestBody requestBody)
+    {
+        return await Api.PostChatMessagesStop(taskId, requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        PostFeedback.RequestBody                                              requestBody)
+    {
+        return await Api.PostMessagesFeedbacks(messageId, requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<GetSuggested.ResponseBody> GetMessagesSuggested(string messageId, string user)
+    {
+        return await Api.GetMessagesSuggested(messageId, user);
+    }
+
+    /// <inheritdoc />
+    public async Task<Chat.Messages.Get.ResponseBody> GetMessages(string conversation_id, string user, string first_id,
+        int                                                              limit)
+    {
+        return await Api.GetMessages(conversation_id, user, first_id, limit);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostFilesUpload(string user, FileInfo file)
+    {
+        return await Api.PostFilesUpload(user, file);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostAudioToText(FileInfo file, string user)
+    {
+        return await Api.PostAudioToText(file, user);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostTextToAudio(object requestBody)
+    {
+        return await Api.PostTextToAudio(requestBody);
+    }
 
     #endregion
 }

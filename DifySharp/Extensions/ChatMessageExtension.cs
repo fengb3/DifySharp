@@ -40,7 +40,12 @@ public static class ChatMessageExtension
 
         var httpResponseMessage = await chatApi.PostChatMessages(requestBody);
 
-        httpResponseMessage.EnsureSuccessStatusCode();
+        if (!httpResponseMessage.IsSuccessStatusCode)
+        {
+            var msg = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            throw new HttpRequestException(msg);
+        }
 
         var result =
             await httpResponseMessage.Content.ReadFromJsonAsync<ChatMessage.ChatCompletionResponseBody>(JsonOptions);

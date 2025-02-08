@@ -43,7 +43,7 @@ public static class ChatMessage
         /// （选填）会话 ID，
         /// 若需要基于之前的聊天记录继续对话，则必须传之前消息的 conversation_id。
         /// </summary>
-        public string? ConversationId { get; init; }
+        public string ConversationId { get; init; } = "";
 
         /// <summary>
         /// 上传的文件。
