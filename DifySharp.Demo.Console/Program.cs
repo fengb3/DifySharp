@@ -1,12 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using DifySharp;
 using DifySharp.Chat.ChatMessages;
 using DifySharp.Extensions;
-using DifySharp.KnowledgeBase.Dataset;
-using Microsoft.Extensions.Logging;
 
 
 // knowledge base api

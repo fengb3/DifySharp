@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DifySharp.Apis;
 using DifySharp.Chat.ChatMessages;
-using Microsoft.Extensions.Logging;
 
 namespace DifySharp.Extensions;
 

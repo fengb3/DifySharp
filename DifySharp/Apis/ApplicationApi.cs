@@ -1,6 +1,3 @@
-using WebApiClientCore.Attributes;
-using WebApiClientCore.Parameters;
-
 namespace DifySharp.Apis;
 
 // public interface IApplicationApi

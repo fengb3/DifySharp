@@ -1,12 +1,8 @@
-using System.Text.Encodings.Web;
-using System.Text.Json;
 using DifySharp;
-using DifySharp.Apis;
 using DifySharp.Chat.ChatMessages;
 using DifySharp.Extensions;
 using DifySharp.KnowledgeBase;
 using DifySharp.KnowledgeBase.Document;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 

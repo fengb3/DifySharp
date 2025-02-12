@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using DifySharp.ApiKey;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using WebApiClientCore;
 using WebApiClientCore.Attributes;
 
