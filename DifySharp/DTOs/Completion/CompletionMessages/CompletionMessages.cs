@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace DifySharp.Chat.ChatMessages;
+namespace DifySharp.Completion.CompletionMessages;
 
-public static class ChatMessage
+public class CompletionMessages
 {
     public record RequestBody
     {
@@ -48,14 +47,7 @@ public static class ChatMessage
         /// 上传的文件。
         /// </summary>
         public ICollection<File>? Files { get; init; }
-
-        /// <summary>
-        /// （选填）自动生成标题，默认 true。
-        /// 若设置为 false，则可通过调用会话重命名接口并设置 auto_generate 为 true 实现异步生成标题。
-        /// </summary>
-        public bool AutoGenerateName { get; init; } = true;
     }
-
 
     public record File
     {
@@ -94,56 +86,28 @@ public static class ChatMessage
     }
 
     /// <summary>
-    /// 返回完整的 App 结果, <c>Content-Type</c> 为 <c>application/json</c>。
+    /// 
     /// </summary>
-    /// <当>
-    /// `response_mode` 为 `blocking` 时，返回
-    /// </当>
-    [Serializable]
-    public record ResponseBody
-    {
-        /// <summary>
-        /// 消息唯一 ID
-        /// </summary>
-        public required string MessageId { get; init; }
+    /// <param name="MessageId">消息唯一 ID</param>
+    /// <param name="Mode">App 模式，固定为 chat</param>
+    /// <param name="Answer">完整回复内容</param>
+    /// <param name="Metadata">元数据</param>
+    /// <param name="CreateAt">消息创建时间戳，如：1705395332</param>
+    public record ResponseBody(
+        string   MessageId,
+        string   Mode,
+        string   Answer,
+        Metadata Metadata,
+        int      CreateAt
+    );
 
-        /// <summary>
-        /// 会话 ID
-        /// </summary>
-        public required string ConversationId { get; init; }
-
-        /// <summary>
-        /// App 模式，固定为 chat
-        /// </summary>
-        public required string Mode { get; init; } // "chat"
-
-        /// <summary>
-        /// 完整回复内容
-        /// </summary>
-        public required string Answer { get; init; }
-
-        /// <summary>
-        ///  元数据
-        /// </summary>
-        public MetadataImpl? Metadata { get; init; }
-
-        /// <summary>
-        /// 消息创建时间戳
-        /// </summary>
-        public int CreateAt { get; init; }
-
-        [Serializable]
-        public record MetadataImpl
-        {
-            /// <summary>
-            /// 模型用量信息
-            /// </summary>
-            public JsonElement Usage { get; init; }
-
-            /// <summary>
-            /// 引用和归属分段列表
-            /// </summary>
-            public JsonElement RetrieverResources { get; init; }
-        }
-    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Usage">模型用量信息</param>
+    /// <param name="RetrieverResources">引用和归属分段列表</param>
+    public record Metadata(
+        JsonElement? Usage,
+        JsonElement  RetrieverResources
+    );
 }

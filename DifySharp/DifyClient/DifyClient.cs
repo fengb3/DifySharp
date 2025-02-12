@@ -4,12 +4,14 @@ using DifySharp.Chat.Application;
 using DifySharp.Chat.ChatMessages;
 using DifySharp.Chat.Conversations;
 using DifySharp.Chat.Messages;
+using DifySharp.Completion.CompletionMessages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using Microsoft.Extensions.DependencyInjection;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
 using Delete = DifySharp.KnowledgeBase.Document.Delete;
 using Get = DifySharp.KnowledgeBase.Dataset.Get;
+using Stop = DifySharp.Chat.ChatMessages.Stop;
 
 namespace DifySharp;
 
@@ -206,15 +208,51 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     {
     }
 
-    #region ApiCalling
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> PostCompletionMessages(object requestBody) =>
-        await Api.PostCompletionMessages(requestBody);
+    #region Api Calling
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> PostCompletionsMessagesStop(string taskId) =>
-        await Api.PostCompletionsMessagesStop(taskId);
+    /// <inheritdoc />
+    public async Task<Completion.Application.Basic.ResponseBody> GetInfo()
+    {
+        return await Api.GetInfo();
+    }
+
+    /// <inheritdoc />
+    public async Task<Completion.Application.Parameters.ResponseBody> GetParameters()
+    {
+        return await Api.GetParameters();
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostCompletionMessages(CompletionMessages.RequestBody requestBody)
+    {
+        return await Api.PostCompletionMessages(requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<Completion.CompletionMessages.Stop.ResponseBody> PostCompletionsMessagesStop(string taskId)
+    {
+        return await Api.PostCompletionsMessagesStop(taskId);
+    }
+
+    /// <inheritdoc />
+    public async Task<Completion.Messages.PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        Completion.Messages.PostFeedback.RequestBody                                              requestBody)
+    {
+        return await Api.PostMessagesFeedbacks(messageId, requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostFilesUpload(string user, FileInfo file)
+    {
+        return await Api.PostFilesUpload(user, file);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostTextToAudio(object requestBody)
+    {
+        return await Api.PostTextToAudio(requestBody);
+    }
 
     #endregion
 }

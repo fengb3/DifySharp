@@ -28,7 +28,6 @@ var chatClient = new ChatClient("app-YmdV5dKG5KQMZOfT44AATGCR");
 var response = await chatClient.PostChatMessageBlocking(new ChatMessage.RequestBody
 {
     Query        = "ping",
-    ResponseMode = ChatMessage.ResponseMode.Blocking,
     User         = "test-user"
 });
 
@@ -38,13 +37,12 @@ Console.WriteLine(response.Answer);
 var chunks = chatClient.PostChatMessageStreaming(new ChatMessage.RequestBody
 {
     Query        = "What dose the fox say?",
-    ResponseMode = ChatMessage.ResponseMode.Streaming,
     User         = "test-user"
 });
 
 await foreach (var chunk in chunks)
 {
-    if (chunk is ChatMessage.MessageEvent messageEvent)
+    if (chunk is MessageEvent messageEvent)
         Console.Write(messageEvent.Answer);
 }
 

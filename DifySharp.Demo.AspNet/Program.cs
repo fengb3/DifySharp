@@ -91,7 +91,6 @@ app.MapGet("/ChatApiDemo/ChatMessagesBlocking", async (IServiceProvider sp) =>
     var response = await client.PostChatMessageBlocking(new ChatMessage.RequestBody
     {
         Query        = "ping",
-        ResponseMode = ChatMessage.ResponseMode.Blocking,
         User         = "test-user"
     });
 

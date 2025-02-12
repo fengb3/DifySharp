@@ -30,13 +30,15 @@ public static class ChatMessageExtension
     /// <param name="requestBody"> the request body of the chat message. </param>
     /// <returns>The chat message completes the  response body. </returns>
     /// <exception cref="ArgumentException"> throws an exception when ResponseMode is not Blocking. </exception>
-    public static async Task<ChatMessage.ChatCompletionResponseBody> PostChatMessageBlocking(
+    public static async Task<ChatMessage.ResponseBody> PostChatMessageBlocking(
         this IChatApi           chatApi,
         ChatMessage.RequestBody requestBody)
     {
-        if (requestBody.ResponseMode != ChatMessage.ResponseMode.Blocking)
-            throw new ArgumentException(
-                $"ResponseMode must be Blocking when calling {nameof(PostChatMessageBlocking)}");
+        // if (requestBody.ResponseMode != ChatMessage.ResponseMode.Blocking)
+        //     throw new ArgumentException(
+        //         $"ResponseMode must be Blocking when calling {nameof(PostChatMessageBlocking)}");
+
+        requestBody.ApplicationResponseMode = ApplicationResponseMode.Blocking;
 
         var httpResponseMessage = await chatApi.PostChatMessages(requestBody);
 
@@ -48,7 +50,7 @@ public static class ChatMessageExtension
         }
 
         var result =
-            await httpResponseMessage.Content.ReadFromJsonAsync<ChatMessage.ChatCompletionResponseBody>(JsonOptions);
+            await httpResponseMessage.Content.ReadFromJsonAsync<ChatMessage.ResponseBody>(JsonOptions);
 
         Debug.Assert(result != null, nameof(result) + " != null");
 
@@ -63,14 +65,12 @@ public static class ChatMessageExtension
     /// <returns>An asynchronous enumerable that contains a chunked response body for chat messages.</returns>
     /// <exception cref="ArgumentException">Throws an exception when ResponseMode is not Streaming.</exception>
     /// <exception cref="HttpRequestException">Throws an exception when the HTTP response is not successful.</exception>
-    public static async IAsyncEnumerable<ChatMessage.ChunkChatCompletionResponseBody> PostChatMessageStreaming(
+    public static async IAsyncEnumerable<ChunkCompletionResponseBody> PostChatMessageStreaming(
         this IChatApi           api,
         ChatMessage.RequestBody requestBody
     )
     {
-        if (requestBody.ResponseMode != ChatMessage.ResponseMode.Streaming)
-            throw new ArgumentException(
-                $"ResponseMode must be Streaming when calling {nameof(PostChatMessageStreaming)}");
+        requestBody.ApplicationResponseMode = ApplicationResponseMode.Streaming;
 
         var httpResponseMessage = await api.PostChatMessages(requestBody);
 
@@ -87,7 +87,7 @@ public static class ChatMessageExtension
 
         var reader = new StreamReader(stream);
 
-        const string prefix = ChatMessage.ChunkChatCompletionResponseBody.CHUNK_PREFIX;
+        const string prefix = ChunkCompletionResponseBody.CHUNK_PREFIX;
 
         while (await reader.ReadLineAsync() is { } line)
         {
@@ -95,7 +95,7 @@ public static class ChatMessageExtension
 
             var json = line[prefix.Length..];
 
-            var chunk = JsonSerializer.Deserialize<ChatMessage.ChunkChatCompletionResponseBody>(json, JsonOptions);
+            var chunk = JsonSerializer.Deserialize<ChunkCompletionResponseBody>(json, JsonOptions);
 
             Debug.Assert(chunk != null, nameof(chunk) + " != null");
 
