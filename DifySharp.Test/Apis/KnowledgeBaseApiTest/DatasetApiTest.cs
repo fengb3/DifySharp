@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-
 namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 
 public class DatasetApiTestFixture : KnowledgeBaseApiTestFixture

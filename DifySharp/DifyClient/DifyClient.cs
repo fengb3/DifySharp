@@ -8,9 +8,12 @@ using DifySharp.Completion.CompletionMessages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using Microsoft.Extensions.DependencyInjection;
+using Basic = DifySharp.Completion.Application.Basic;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
 using Delete = DifySharp.KnowledgeBase.Document.Delete;
 using Get = DifySharp.KnowledgeBase.Dataset.Get;
+using Parameters = DifySharp.Completion.Application.Parameters;
+using PostFeedback = DifySharp.Completion.Messages.PostFeedback;
 using Stop = DifySharp.Chat.ChatMessages.Stop;
 
 namespace DifySharp;
@@ -154,7 +157,7 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
     }
 
     public async Task<KnowledgeBase.Chunk.Create.ResponseBody> PostCreateSegmentAsync(string datasetId,
-        string documentId, KnowledgeBase.Chunk.Create.RequestBody body)
+        string                                                                 documentId, KnowledgeBase.Chunk.Create.RequestBody body)
     {
         return await Api.PostCreateSegmentAsync(datasetId, documentId, body);
     }
@@ -212,13 +215,13 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     #region Api Calling
 
     /// <inheritdoc />
-    public async Task<Completion.Application.Basic.ResponseBody> GetInfo()
+    public async Task<Basic.ResponseBody> GetInfo()
     {
         return await Api.GetInfo();
     }
 
     /// <inheritdoc />
-    public async Task<Completion.Application.Parameters.ResponseBody> GetParameters()
+    public async Task<Parameters.ResponseBody> GetParameters()
     {
         return await Api.GetParameters();
     }
@@ -236,8 +239,8 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     }
 
     /// <inheritdoc />
-    public async Task<Completion.Messages.PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
-        Completion.Messages.PostFeedback.RequestBody                                              requestBody)
+    public async Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        PostFeedback.RequestBody                                              requestBody)
     {
         return await Api.PostMessagesFeedbacks(messageId, requestBody);
     }
@@ -276,13 +279,13 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     #region ApiCalling
 
     /// <inheritdoc />
-    public async Task<Basic.ResponseBody> GetInfo()
+    public async Task<Chat.Application.Basic.ResponseBody> GetInfo()
     {
         return await Api.GetInfo();
     }
 
     /// <inheritdoc />
-    public async Task<Parameters.ResponseBody> GetParameters()
+    public async Task<Chat.Application.Parameters.ResponseBody> GetParameters()
     {
         return await Api.GetParameters();
     }
@@ -326,8 +329,8 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     }
 
     /// <inheritdoc />
-    public async Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
-        PostFeedback.RequestBody                                              requestBody)
+    public async Task<Chat.Messages.PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        Chat.Messages.PostFeedback.RequestBody                                              requestBody)
     {
         return await Api.PostMessagesFeedbacks(messageId, requestBody);
     }

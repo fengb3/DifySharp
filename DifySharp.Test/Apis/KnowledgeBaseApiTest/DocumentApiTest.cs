@@ -12,7 +12,7 @@ public class DocumentApiTestFixture : KnowledgeBaseApiTestFixture
 	public Dataset             Dataset { get; private set; }
 	public KnowledgeBaseClient Client  { get; }
 
-	public DocumentApiTestFixture() : base()
+	public DocumentApiTestFixture()
 	{
 		Client = ServiceProvider.GetRequiredKeyedService<KnowledgeBaseClient>("knowledge");
 

@@ -53,4 +53,4 @@ public record Create
         Vendor   = 0,
         External = 1
     }
-};
+}
