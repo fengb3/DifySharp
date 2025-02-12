@@ -78,8 +78,6 @@ public static class ChatMessageExtension
             var msg = await httpResponseMessage.Content.ReadAsStringAsync();
 
             throw new HttpRequestException(msg);
-
-            yield break;
         }
 
         var stream = await httpResponseMessage.Content.ReadAsStreamAsync();

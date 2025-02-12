@@ -1,7 +1,7 @@
 ﻿using DifySharp.Apis;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DifySharp;
+namespace DifySharp.DifyClient;
 
 public static class DifyClientFactory
 {

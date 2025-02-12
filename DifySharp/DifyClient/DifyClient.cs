@@ -8,13 +8,13 @@ using DifySharp.Completion.CompletionMessages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using Microsoft.Extensions.DependencyInjection;
-using Basic = DifySharp.Completion.Application.Basic;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
 using Delete = DifySharp.KnowledgeBase.Document.Delete;
 using Get = DifySharp.KnowledgeBase.Dataset.Get;
 using Parameters = DifySharp.Completion.Application.Parameters;
 using PostFeedback = DifySharp.Completion.Messages.PostFeedback;
 using Stop = DifySharp.Chat.ChatMessages.Stop;
+// ReSharper disable InconsistentNaming
 
 namespace DifySharp;
 
@@ -157,7 +157,7 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
     }
 
     public async Task<KnowledgeBase.Chunk.Create.ResponseBody> PostCreateSegmentAsync(string datasetId,
-        string                                                                 documentId, KnowledgeBase.Chunk.Create.RequestBody body)
+        string documentId, KnowledgeBase.Chunk.Create.RequestBody body)
     {
         return await Api.PostCreateSegmentAsync(datasetId, documentId, body);
     }
@@ -215,7 +215,7 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     #region Api Calling
 
     /// <inheritdoc />
-    public async Task<Basic.ResponseBody> GetInfo()
+    public async Task<Completion.Application.Basic.ResponseBody> GetInfo()
     {
         return await Api.GetInfo();
     }
@@ -297,8 +297,11 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Conversations.Get.ResponseBody> GetConversations(string user,         string? last_id = null,
-        int?                                                                       limit = null, string? sort_by = null)
+    public async Task<Chat.Conversations.Get.ResponseBody> GetConversations(
+        string  user,
+        string? last_id = null,
+        int?    limit   = null,
+        string? sort_by = null)
     {
         return await Api.GetConversations(user, last_id, limit, sort_by);
     }

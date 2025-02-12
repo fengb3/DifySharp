@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using DifySharp;
 using DifySharp.ApiKey;
 using DifySharp.Apis;
+using DifySharp.DifyClient;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
