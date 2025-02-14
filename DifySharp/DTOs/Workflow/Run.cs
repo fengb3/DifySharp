@@ -1,16 +1,11 @@
 ﻿using System.Text.Json;
 
-namespace DifySharp.Completion.CompletionMessages;
+namespace DifySharp.Workflow.Run;
 
-public class CompletionMessages
+public class Run
 {
     public record RequestBody
     {
-        /// <summary>
-        /// 用户输入/提问内容。
-        /// </summary>
-        public required string Query { get; init; }
-
         /// <summary>
         /// 允许传入 App 定义的各变量值。默认值为 {}。
         /// inputs 参数包含了多组键值对（Key/Value pairs），
@@ -38,12 +33,6 @@ public class CompletionMessages
         public required string User { get; init; }
 
         /// <summary>
-        /// （选填）会话 ID，
-        /// 若需要基于之前的聊天记录继续对话，则必须传之前消息的 conversation_id。
-        /// </summary>
-        public string ConversationId { get; init; } = "";
-
-        /// <summary>
         /// 上传的文件。
         /// </summary>
         public ICollection<File>? Files { get; init; }
@@ -52,7 +41,14 @@ public class CompletionMessages
     public record File
     {
         /// <summary>
-        /// 支持类型：图片 image（目前仅支持图片格式）
+        /// 支持类型:
+        /// <list type="bullet">
+        /// <item>document 具体类型包含：'TXT', 'MD', 'MARKDOWN', 'PDF', 'HTML', 'XLSX', 'XLS', 'DOCX', 'CSV', 'EML', 'MSG', 'PPTX', 'PPT', 'XML', 'EPUB'</item>
+        /// <item>image  具体类型包含：'JPG', 'JPEG', 'PNG', 'GIF', 'WEBP', 'SVG'</item>
+        /// <item>audio  具体类型包含：'MP3', 'M4A', 'WAV', 'WEBM', 'AMR'</item>
+        /// <item>video  具体类型包含：'MP4', 'MOV', 'MPEG', 'MPGA'</item>
+        /// <item>custom 具体类型包含：其他文件类型</item>
+        /// </list>
         /// </summary>
         public string? Type { get; init; }
 
@@ -85,29 +81,32 @@ public class CompletionMessages
         public string? UploadFileId { get; init; }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="MessageId">消息唯一 ID</param>
-    /// <param name="Mode">App 模式，固定为 chat</param>
-    /// <param name="Answer">完整回复内容</param>
-    /// <param name="Metadata">元数据</param>
-    /// <param name="CreateAt">消息创建时间戳，如：1705395332</param>
     public record ResponseBody(
-        string   MessageId,
-        string   Mode,
-        string   Answer,
-        Metadata Metadata,
-        int      CreateAt
+        string? WorkflowRunId,
+        string  TaskId,
+        Data    Data
     );
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Usage">模型用量信息</param>
-    /// <param name="RetrieverResources">引用和归属分段列表</param>
-    public record Metadata(
-        JsonElement? Usage,
-        JsonElement  RetrieverResources
+    /// <param name="Id"> workflow 执行 ID</param>
+    /// <param name="WorkflowId">关联 Workflow ID</param>
+    /// <param name="Status">执行状态, running / succeeded / failed / stopped</param>
+    /// <param name="Outputs">Optional 输出内容</param>
+    /// <param name="Error">Optional 错误原因</param>
+    /// <param name="ElapsedTime">Optional 耗时(s)</param>
+    /// <param name="TotalTokens">Optional 总使用 tokens</param>
+    /// <param name="TotalSteps">总步数（冗余），默认 0</param>
+    /// <param name="CreatedAt">开始时间</param>
+    /// <param name="FinishedAt">结束时间</param>
+    public record Data(
+        string       Id,
+        string       WorkflowId,
+        string?      Status,
+        JsonElement? Outputs,
+        string?      Error,
+        float?       ElapsedTime,
+        int?         TotalTokens,
+        int          TotalSteps,
+        long         CreatedAt,
+        long         FinishedAt
     );
 }
