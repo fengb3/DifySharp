@@ -18,8 +18,7 @@ public class Logs
         string           CreatedByRole,
         string           CreatedByAccount,
         CreatedByEndUser CreatedByEndUser,
-        string           CreatedAt,
- 
+        string           CreatedAt
     );
 
     public record WorkflowRun(
@@ -27,9 +26,8 @@ public class Logs
         string Version,
         String Status,
         String Error,
-        float            ElapsedTime,
-        int  TotalTokens,
-        
+        float  ElapsedTime,
+        int    TotalTokens
     );
 
     public record CreatedByEndUser(

@@ -7,13 +7,16 @@ using DifySharp.Chat.Messages;
 using DifySharp.Completion.CompletionMessages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
+using DifySharp.Workflow.Run;
 using Microsoft.Extensions.DependencyInjection;
+using Basic = DifySharp.Workflow.Application.Basic;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
 using Delete = DifySharp.KnowledgeBase.Document.Delete;
 using Get = DifySharp.KnowledgeBase.Dataset.Get;
 using Parameters = DifySharp.Completion.Application.Parameters;
 using PostFeedback = DifySharp.Completion.Messages.PostFeedback;
 using Stop = DifySharp.Chat.ChatMessages.Stop;
+
 // ReSharper disable InconsistentNaming
 
 namespace DifySharp;
@@ -378,28 +381,45 @@ public class WorkflowClient : DifyClientProxy<IWorkflowApi>, IWorkflowApi
     {
     }
 
+    /// <summary>
+    /// Create a instance of Dify <see cref="WorkflowClient"/> with the given api key and base url.
+    /// </summary>
+    /// <param name="apiKey">api key for dify chat application</param>
+    /// <param name="baseUrl">base url of a dify server, default value: https://api.dify.ai/v1</param>
     public WorkflowClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
         new DifyClient<IWorkflowApi>(new DifyApiSecret(apiKey), baseUrl))
     {
     }
 
-    #region ApiCalling
+    public async Task<Basic.ResponseBody> GetInfo()
+    {
+        return await Api.GetInfo();
+    }
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> PostWorkflowsRun(object requestBody) =>
+    #region Api Calling
+
+    /// <inheritdoc />
+    public async Task<Workflow.Application.Parameters.ResponseBody> GetParameters() =>
+        await Api.GetParameters();
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostWorkflowsRun(Run.RequestBody requestBody) =>
         await Api.PostWorkflowsRun(requestBody);
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> GetWorkflowsRun(string workflowId) =>
-        await Api.GetWorkflowsRun(workflowId);
+    /// <inheritdoc />
+    public async Task<Run.Data> GetWorkflowsRun(string workflowId) => await Api.GetWorkflowsRun(workflowId);
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<HttpResponseMessage> PostWorkflowsTasksStop(string taskId) =>
         await Api.PostWorkflowsTasksStop(taskId);
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<HttpResponseMessage> GetWorkflowsLogs(string keyword, string status, int page, int limit) =>
         await Api.GetWorkflowsLogs(keyword, status, page, limit);
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostFilesUpload(string user, FileInfo file) =>
+        await Api.PostFilesUpload(user, file);
 
     #endregion
 }
