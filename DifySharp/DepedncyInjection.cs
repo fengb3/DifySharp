@@ -30,7 +30,7 @@ public static class DependencyInjection
         {
             var key = apiKey.Name;
 
-            switch (apiKey.ApiType)
+            switch (apiKey.ApiType?.ToUpper())
             {
                 case DifyApiType.KNOWLEDGE_BASE:
                     // services.AddKeyedScoped<DifyClient<IKnowledgeBaseApi>>(key);
