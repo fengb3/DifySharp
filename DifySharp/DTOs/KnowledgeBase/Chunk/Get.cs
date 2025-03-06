@@ -5,7 +5,7 @@
 /// </summary>
 public record Get
 {
-    public record RequestBody();
+    public record RequestBody;
 
     public record ResponseBody(
         ICollection<Chunk> Data,

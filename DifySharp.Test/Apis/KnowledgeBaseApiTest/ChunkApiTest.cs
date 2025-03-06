@@ -19,7 +19,7 @@ public class ChunkApiTestFixture : KnowledgeBaseApiTestFixture
 
 	public KnowledgeBaseClient Client { get; set; }
 
-	public ChunkApiTestFixture() : base()
+	public ChunkApiTestFixture()
 	{
 		Client = ServiceProvider.GetRequiredKeyedService<KnowledgeBaseClient>("knowledge");
 

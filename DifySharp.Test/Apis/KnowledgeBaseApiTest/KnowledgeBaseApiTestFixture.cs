@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Xunit.DependencyInjection.Logging;
 
 namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 

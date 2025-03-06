@@ -1,4 +1,4 @@
-﻿namespace AlertSuggestion.Lib.DifyClient.DTOs.KnowledgeBase;
+﻿namespace DifySharp.KnowledgeBase;
 
 public record Retrieve
 {

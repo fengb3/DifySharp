@@ -5,7 +5,6 @@
 
 Dify SDK for csharp
 
-
 ## Install
 
 ```bash
@@ -14,8 +13,7 @@ dotnet add package DifySharp
 
 ## Usage
 
-### Without Dependency Injection
-
+### Console
 
 ```csharp
 
@@ -45,4 +43,40 @@ await foreach (var chunk in chunks)
         Console.Write(messageEvent.Answer);
 }
 // Ring-ding-ding-ding-dingeringeding! Gering-ding-ding-ding-dingeringeding! Wa-pa-pa-pa-pa-pa-pow! Jacha-chacha-chacha-chow! Fraka-kaka-kaka-kaka-kow! A-hee-ahee ha-hee! A-oo-oo-oo-ooo!
+```
+
+### Dependency Injection - ASP.NET Core
+
+```csharp
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDifySharp(o =>
+{
+    o.Secrets =
+    [
+        new DifyApiSecret("<your-knowledge-base-secret>", "knowledge", DifyApiType.KNOWLEDGE_BASE),
+        new DifyApiSecret("<your-chat-application-secret>", "chat", DifyApiType.CHAT)
+        .. // add more secrets
+    ];
+});
+
+var app = builder.Build();
+
+// get ChatClient from DI container with client name
+app.MapGet("/", async ([FromKeyedServices("chat")] ChatClient chatClient) =>
+    {
+        var response = await chatClient.PostChatMessageBlocking(new ChatMessage.RequestBody
+        {
+            Query        = "ping!",
+            ResponseMode = ChatMessage.ResponseMode.Blocking,
+            User         = "test-user"
+        });
+
+        return Results.Text(response.Answer); // pong！
+    }
+);
+
+app.Run();
+
 ```

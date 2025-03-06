@@ -3,7 +3,6 @@ using DifySharp.KnowledgeBase.Chunk;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using WebApiClientCore.Attributes;
-using WebApiClientCore;
 
 namespace DifySharp.Apis
 {

@@ -1,4 +1,3 @@
-using DifySharp;
 using JetBrains.Annotations;
 
 namespace DifySharp.Test;

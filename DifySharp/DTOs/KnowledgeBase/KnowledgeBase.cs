@@ -1,4 +1,4 @@
-﻿namespace AlertSuggestion.ChatHub.DifyClient.DTOs;
+﻿namespace DifySharp.KnowledgeBase;
 
 public record BaseResponse;
 

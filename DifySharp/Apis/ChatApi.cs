@@ -197,7 +197,7 @@ namespace DifySharp.Chat.Conversations
         /// <param name="requestBody"></param>
         /// <returns></returns>
         [HttpPost("/v1/conversations/{conversationId}/name")]
-        public Task<Conversations.Conversation> PostRenameConversation(
+        public Task<Conversation> PostRenameConversation(
             string                           conversationId,
             [JsonContent] Rename.RequestBody requestBody
         );
