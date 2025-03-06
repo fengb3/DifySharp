@@ -1,13 +1,10 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.Options;
-using WebApiClientCore.Extensions.OAuths;
 using DifySharp;
 using DifySharp.ApiKey;
 using DifySharp.Apis;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using WebApiClientCore.Extensions.OAuths.TokenProviders;
+using DifySharp.DifyClient;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -27,13 +24,14 @@ public static class DependencyInjection
             .ConfigureDifyApi<IWorkflowApi>()
             ;
 
+        services.AddSingleton<DifyClientFactory>();
         services.AddScoped<IApiKeyProvider, ApiKeyProvider>();
 
         foreach (var apiKey in options.Secrets)
         {
             var key = apiKey.Name;
 
-            switch (apiKey.ApiType)
+            switch (apiKey.ApiType?.ToUpper())
             {
                 case DifyApiType.KNOWLEDGE_BASE:
                     // services.AddKeyedScoped<DifyClient<IKnowledgeBaseApi>>(key);

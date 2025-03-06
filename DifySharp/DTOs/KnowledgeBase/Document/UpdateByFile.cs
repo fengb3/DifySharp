@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace DifySharp.KnowledgeBase.Document;
+﻿namespace DifySharp.KnowledgeBase.Document;
 
 public class UpdateByFile
 {

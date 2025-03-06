@@ -34,7 +34,7 @@ public class Startup
         if (!File.Exists(settingFilePath)) return;
 
         using var file = File.Open(settingFilePath, FileMode.Open);
-        var document = JsonDocument.Parse(file, new JsonDocumentOptions()
+        var document = JsonDocument.Parse(file, new JsonDocumentOptions
         {
             CommentHandling = JsonCommentHandling.Skip
         });

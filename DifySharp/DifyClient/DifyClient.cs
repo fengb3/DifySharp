@@ -4,12 +4,20 @@ using DifySharp.Chat.Application;
 using DifySharp.Chat.ChatMessages;
 using DifySharp.Chat.Conversations;
 using DifySharp.Chat.Messages;
+using DifySharp.Completion.CompletionMessages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
+using DifySharp.Workflow.Run;
 using Microsoft.Extensions.DependencyInjection;
+using Basic = DifySharp.Workflow.Application.Basic;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
 using Delete = DifySharp.KnowledgeBase.Document.Delete;
 using Get = DifySharp.KnowledgeBase.Dataset.Get;
+using Parameters = DifySharp.Completion.Application.Parameters;
+using PostFeedback = DifySharp.Completion.Messages.PostFeedback;
+using Stop = DifySharp.Chat.ChatMessages.Stop;
+
+// ReSharper disable InconsistentNaming
 
 namespace DifySharp;
 
@@ -206,15 +214,51 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
     {
     }
 
-    #region ApiCalling
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> PostCompletionMessages(object requestBody) =>
-        await Api.PostCompletionMessages(requestBody);
+    #region Api Calling
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> PostCompletionsMessagesStop(string taskId) =>
-        await Api.PostCompletionsMessagesStop(taskId);
+    /// <inheritdoc />
+    public async Task<Completion.Application.Basic.ResponseBody> GetInfo()
+    {
+        return await Api.GetInfo();
+    }
+
+    /// <inheritdoc />
+    public async Task<Parameters.ResponseBody> GetParameters()
+    {
+        return await Api.GetParameters();
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostCompletionMessages(CompletionMessages.RequestBody requestBody)
+    {
+        return await Api.PostCompletionMessages(requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<Completion.CompletionMessages.Stop.ResponseBody> PostCompletionsMessagesStop(string taskId)
+    {
+        return await Api.PostCompletionsMessagesStop(taskId);
+    }
+
+    /// <inheritdoc />
+    public async Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        PostFeedback.RequestBody                                              requestBody)
+    {
+        return await Api.PostMessagesFeedbacks(messageId, requestBody);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostFilesUpload(string user, FileInfo file)
+    {
+        return await Api.PostFilesUpload(user, file);
+    }
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostTextToAudio(object requestBody)
+    {
+        return await Api.PostTextToAudio(requestBody);
+    }
 
     #endregion
 }
@@ -238,13 +282,13 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     #region ApiCalling
 
     /// <inheritdoc />
-    public async Task<Basic.ResponseBody> GetInfo()
+    public async Task<Chat.Application.Basic.ResponseBody> GetInfo()
     {
         return await Api.GetInfo();
     }
 
     /// <inheritdoc />
-    public async Task<Parameters.ResponseBody> GetParameters()
+    public async Task<Chat.Application.Parameters.ResponseBody> GetParameters()
     {
         return await Api.GetParameters();
     }
@@ -256,8 +300,11 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Conversations.Get.ResponseBody> GetConversations(string user,         string? last_id = null,
-        int?                                                                       limit = null, string? sort_by = null)
+    public async Task<Chat.Conversations.Get.ResponseBody> GetConversations(
+        string  user,
+        string? last_id = null,
+        int?    limit   = null,
+        string? sort_by = null)
     {
         return await Api.GetConversations(user, last_id, limit, sort_by);
     }
@@ -288,8 +335,8 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     }
 
     /// <inheritdoc />
-    public async Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
-        PostFeedback.RequestBody                                              requestBody)
+    public async Task<Chat.Messages.PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        Chat.Messages.PostFeedback.RequestBody                                              requestBody)
     {
         return await Api.PostMessagesFeedbacks(messageId, requestBody);
     }
@@ -334,28 +381,45 @@ public class WorkflowClient : DifyClientProxy<IWorkflowApi>, IWorkflowApi
     {
     }
 
+    /// <summary>
+    /// Create a instance of Dify <see cref="WorkflowClient"/> with the given api key and base url.
+    /// </summary>
+    /// <param name="apiKey">api key for dify chat application</param>
+    /// <param name="baseUrl">base url of a dify server, default value: https://api.dify.ai/v1</param>
     public WorkflowClient(string apiKey, string baseUrl = "https://api.dify.ai/v1") : base(
         new DifyClient<IWorkflowApi>(new DifyApiSecret(apiKey), baseUrl))
     {
     }
 
-    #region ApiCalling
+    public async Task<Basic.ResponseBody> GetInfo()
+    {
+        return await Api.GetInfo();
+    }
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> PostWorkflowsRun(object requestBody) =>
+    #region Api Calling
+
+    /// <inheritdoc />
+    public async Task<Workflow.Application.Parameters.ResponseBody> GetParameters() =>
+        await Api.GetParameters();
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostWorkflowsRun(Run.RequestBody requestBody) =>
         await Api.PostWorkflowsRun(requestBody);
 
-    /// <inheritdoc/>
-    public async Task<HttpResponseMessage> GetWorkflowsRun(string workflowId) =>
-        await Api.GetWorkflowsRun(workflowId);
+    /// <inheritdoc />
+    public async Task<Run.Data> GetWorkflowsRun(string workflowId) => await Api.GetWorkflowsRun(workflowId);
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<HttpResponseMessage> PostWorkflowsTasksStop(string taskId) =>
         await Api.PostWorkflowsTasksStop(taskId);
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<HttpResponseMessage> GetWorkflowsLogs(string keyword, string status, int page, int limit) =>
         await Api.GetWorkflowsLogs(keyword, status, page, limit);
+
+    /// <inheritdoc />
+    public async Task<HttpResponseMessage> PostFilesUpload(string user, FileInfo file) =>
+        await Api.PostFilesUpload(user, file);
 
     #endregion
 }

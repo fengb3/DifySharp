@@ -1,4 +1,3 @@
-using DifySharp.Apis;
 using DifySharp.KnowledgeBase;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
@@ -13,7 +12,7 @@ public class DocumentApiTestFixture : KnowledgeBaseApiTestFixture
 	public Dataset             Dataset { get; private set; }
 	public KnowledgeBaseClient Client  { get; }
 
-	public DocumentApiTestFixture() : base()
+	public DocumentApiTestFixture()
 	{
 		Client = ServiceProvider.GetRequiredKeyedService<KnowledgeBaseClient>("knowledge");
 
