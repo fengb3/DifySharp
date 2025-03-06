@@ -3,8 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DifySharp.DifyClient;
 
-public static class DifyClientFactory
+public class DifyClientFactory
 {
+    private static IServiceProvider? ServiceProvider;
+
+    public DifyClientFactory(IServiceProvider serviceProvider)
+    {
+        ServiceProvider = serviceProvider;
+    }
+
     /// <summary>
     /// Creates a factory function for creating DifyClient instances.
     /// </summary>
@@ -13,7 +20,16 @@ public static class DifyClientFactory
     /// <returns></returns>
     internal static Func<IServiceProvider, object?, DifyClient<TApi>>
         DifyClientGenericFactory<TApi>(DifyApiSecret difyApiSecret) where TApi : notnull
-        => (sp, key) => new DifyClient<TApi>(difyApiSecret, "", sp);
+    {
+        return (sp, key) =>
+        {
+            if (ServiceProvider == null)
+            {
+                var difyFactory = sp.GetRequiredService<DifyClientFactory>();
+            }
+            return new DifyClient<TApi>(difyApiSecret, "", sp);
+        };
+    }
 
     internal static Func<IServiceProvider, object?, KnowledgeBaseClient>
         MakeKnowledgeBaseClientFactory()

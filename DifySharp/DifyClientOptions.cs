@@ -11,6 +11,11 @@ public class DifyClientOptions
     /// a collection of <see cref="DifyApiSecret"/>, for multiple dify applications and knowledge bases management.
     /// </summary>
     public ICollection<DifyApiSecret> Secrets { get; set; } = new List<DifyApiSecret>();
+    
+    /// <summary>
+    /// Specifies whether to enable logging for the dify client.
+    /// </summary>
+    public bool EnableLogging { get; set; } = false;
 }
 
 /// <summary>
@@ -49,6 +54,11 @@ public class DifyApiSecret(string? secretKey = "", string? name = "", string? ap
     /// </list>
     /// </summary>
     public string? ApiType { get; } = apiType;
+    
+    /// <summary>
+    /// Specifies the base url of a dify api server.
+    /// </summary>
+    public string BaseUrl { get; set; }
 }
 
 public static class DifyApiType

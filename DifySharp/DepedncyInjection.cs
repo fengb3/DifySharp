@@ -24,6 +24,7 @@ public static class DependencyInjection
             .ConfigureDifyApi<IWorkflowApi>()
             ;
 
+        services.AddSingleton<DifyClientFactory>();
         services.AddScoped<IApiKeyProvider, ApiKeyProvider>();
 
         foreach (var apiKey in options.Secrets)
