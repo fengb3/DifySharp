@@ -9,6 +9,7 @@ using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using DifySharp.Workflow.Run;
 using Microsoft.Extensions.DependencyInjection;
+using WebApiClientCore.Parameters;
 using Basic = DifySharp.Workflow.Application.Basic;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
 using Delete = DifySharp.KnowledgeBase.Document.Delete;
@@ -118,17 +119,19 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
         await Api.DeleteDataset(datasetId);
     }
 
-    public async Task<CreateByText.ResponseBody> PostCreateDocumentByTextAsync(string datasetId,
-        CreateByText.RequestBody                                                      body)
+    public async Task<CreateByText.ResponseBody> PostCreateDocumentByTextAsync(
+        string                   datasetId,
+        CreateByText.RequestBody body)
     {
         return await Api.PostCreateDocumentByTextAsync(datasetId, body);
     }
 
-    public async Task<CreateByFile.ResponseBody> PostCreateDocumentByFileAsync(string datasetId,
-        CreateByFile.RequestBody                                                      body,
-        FileInfo                                                                      file)
+    public async Task<CreateByFile.ResponseBody> PostCreateDocumentByFileAsync(
+        string            datasetId,
+        CreateByFile.Data data,
+        FormDataFile      file)
     {
-        return await Api.PostCreateDocumentByFileAsync(datasetId, body, file);
+        return await Api.PostCreateDocumentByFileAsync(datasetId, data, file);
     }
 
     public async Task<UpdateByText.ResponseBody> PostUpdateDocumentByTextAsync(
