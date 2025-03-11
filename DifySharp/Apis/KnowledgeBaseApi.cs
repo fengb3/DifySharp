@@ -3,6 +3,7 @@ using DifySharp.KnowledgeBase.Chunk;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using WebApiClientCore.Attributes;
+using WebApiClientCore.Parameters;
 
 namespace DifySharp.Apis
 {
@@ -73,14 +74,14 @@ namespace DifySharp.KnowledgeBase.Document
         /// <para>此接口基于已存在知识库，在此知识库的基础上通过文件创建新的文档</para>
         /// </summary>
         /// <param name="datasetId"></param>
-        /// <param name="body"></param>
+        /// <param name="data"></param>
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost("/v1/datasets/{datasetId}/document/create_by_file")]
         public Task<CreateByFile.ResponseBody> PostCreateDocumentByFileAsync(
-            string                                 datasetId,
-            [FormContent] CreateByFile.RequestBody body,
-            FileInfo                               file
+            [PathQuery]                string            datasetId,
+            [JsonFormDataText]         CreateByFile.Data data,
+            [Parameter(Kind.FormData)] FormDataFile      file
         );
 
         /// <summary>

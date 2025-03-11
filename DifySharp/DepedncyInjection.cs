@@ -70,7 +70,7 @@ public static class DependencyInjection
 
         return services;
     }
-    
+
 
     private static IServiceCollection ConfigureDifyApi<TApi>(this IServiceCollection services) where TApi : class
     {
@@ -81,21 +81,27 @@ public static class DependencyInjection
                     apiOptions.HttpHost = new Uri(difyOptions.BaseUrl);
 
                     // 序列化配置
-                    apiOptions.JsonDeserializeOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                    apiOptions.JsonDeserializeOptions.PropertyNamingPolicy   = JsonNamingPolicy.SnakeCaseLower;
+                    apiOptions.JsonDeserializeOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                     apiOptions.JsonDeserializeOptions.Converters.Add(
                         new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
 
-                    apiOptions.JsonSerializeOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                    apiOptions.JsonSerializeOptions.PropertyNamingPolicy   = JsonNamingPolicy.SnakeCaseLower;
+                    apiOptions.JsonSerializeOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                     apiOptions.JsonSerializeOptions.Converters.Add(
                         new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
 
-                    apiOptions.KeyValueSerializeOptions.IgnoreNullValues = true;
-                    apiOptions.UseLogging                                = true;
+                    apiOptions.KeyValueSerializeOptions.IgnoreNullValues     = true;
+                    apiOptions.KeyValueSerializeOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                    apiOptions.KeyValueSerializeOptions.Converters.Add(
+                        new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
+
+                    apiOptions.UseLogging = difyOptions.EnableLogging;
                 }).Services
             ;
     }
-    
-    
+
+
     // private static IServiceCollection ConfigureDifyKnowledgeApi(this IServiceCollection services)
     // {
     //     services
