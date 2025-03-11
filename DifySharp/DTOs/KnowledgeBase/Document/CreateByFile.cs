@@ -3,20 +3,21 @@
 public record CreateByFile
 {
     public record RequestBody(
-        Data Data
+        Data Data,
+        string File
     );
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="OriginalDocumentId"></param>
-    /// <param name="IndexTechnique"></param>
+    /// <param name="IndexingTechnique"></param>
     /// <param name="DocForm"></param>
     /// <param name="DocLanguage"></param>
     /// <param name="ProcessRule"></param>
     public record Data(
         string?           OriginalDocumentId,
-        IndexingTechnique IndexTechnique,
+        IndexingTechnique IndexingTechnique,
         DocForm           DocForm,
         string            DocLanguage,
         ProcessRule       ProcessRule
