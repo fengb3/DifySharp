@@ -13,7 +13,7 @@ public enum DocForm
     /// <summary>
     /// Parent-child mode
     /// </summary>
-    HierarchicalMode,
+    HierarchicalModel,
 
     /// <summary>
     /// Q and A Mode: Generates Q and A pairs for segmented documents and then embeds the questions
