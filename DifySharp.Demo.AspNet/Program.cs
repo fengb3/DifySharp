@@ -56,7 +56,7 @@ knowledgeGroup.MapGet("create_file_by_text", async (IServiceProvider sp) =>
                         1000
                     ),
                     "paragraph",
-                    new SubChunkSegmentation(
+                    new SubchunkSegmentation(
                         "\n\n",
                         1000,
                         200
@@ -114,7 +114,7 @@ knowledgeGroup.MapGet("create_file_by_file", async (IServiceProvider sp) =>
                 1000
             ),
             "paragraph",
-            new SubChunkSegmentation(
+            new SubchunkSegmentation(
                 "\n\n",
                 1000,
                 200
