@@ -21,12 +21,12 @@ public record ProcessRule(
 /// <item>paragraph : paragraph retrieval</item>
 /// </list>
 /// </param>
-/// <param name="SubChunkSegmentation">(object) Child chunk rules</param>
+/// <param name="SubchunkSegmentation">(object) Child chunk rules</param>
 public record Rules(
     ICollection<PreProcessingRule> PreProcessingRules,
     Segmentation                   Segmentation,
     string                         ParentMode,
-    SubChunkSegmentation           SubChunkSegmentation
+    SubchunkSegmentation           SubchunkSegmentation
 );
 
 /// <summary>
@@ -60,7 +60,7 @@ public record Segmentation(
 /// <param name="Separator">Segmentation identifier. Currently, only one delimiter is allowed. The default is ***</param>
 /// <param name="MaxTokens">The maximum length (tokens) must be validated to be shorter than the length of the parent chunk</param>
 /// <param name="ChunkOverlap">Define the overlap between adjacent chunks (optional)</param>
-public record SubChunkSegmentation(
+public record SubchunkSegmentation(
     string Separator,
     int    MaxTokens,
     int?   ChunkOverlap

@@ -63,7 +63,7 @@ public class DocumentApiTest(
                 1000
             ),
             "paragraph",
-            new SubChunkSegmentation(
+            new SubchunkSegmentation(
                 "\n\n",
                 1000,
                 200
