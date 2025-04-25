@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 
-public class DatasetApiTestFixture : KnowledgeBaseApiTestFixture
+public class DatasetApiTestFixture : ApiTestFixture
 {
     public KnowledgeBaseClient Client { get; set; }
     

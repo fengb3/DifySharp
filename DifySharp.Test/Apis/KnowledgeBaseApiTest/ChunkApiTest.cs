@@ -12,7 +12,7 @@ using DatasetCreate = DifySharp.KnowledgeBase.Dataset.Create;
 
 namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 
-public class ChunkApiTestFixture : KnowledgeBaseApiTestFixture
+public class ChunkApiTestFixture : ApiTestFixture
 {
 	public Dataset  Dataset  { get; private set; }
 	public Document Document { get; set; }

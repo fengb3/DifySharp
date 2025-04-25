@@ -7,7 +7,7 @@ using DifySharp.Chat.Messages;
 using DifySharp.Completion.CompletionMessages;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
-using DifySharp.Workflow.Run;
+using DifySharp.Workflow;
 using Microsoft.Extensions.DependencyInjection;
 using WebApiClientCore.Parameters;
 using Basic = DifySharp.Workflow.Application.Basic;

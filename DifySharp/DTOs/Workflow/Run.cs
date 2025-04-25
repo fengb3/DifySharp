@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace DifySharp.Workflow.Run;
+namespace DifySharp.Workflow;
 
 public class Run
 {
@@ -81,6 +81,12 @@ public class Run
         public string? UploadFileId { get; init; }
     }
 
+    /// <summary>
+    /// 响应体
+    /// </summary>
+    /// <param name="WorkflowRunId"></param>
+    /// <param name="TaskId"></param>
+    /// <param name="Data"></param>
     public record ResponseBody(
         string? WorkflowRunId,
         string  TaskId,

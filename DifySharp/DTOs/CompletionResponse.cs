@@ -11,10 +11,11 @@ namespace DifySharp;
 /// 每个流式块均为 data: 开头，块之间以 \n\n 即两个换行符分隔，如下所示：
 /// <code>
 ///	data: {
-///		"event": "message",
-///		"task_id": "900bbd43-dc0b-4383-a372-aa6e6c414227",
-///		"id": "663c5084-a254-4040-8ad3-51f2a3c1a77c", "answer": "Hi",
-///		"created_at": 1705398420
+///     "event": "message",
+///     "task_id": "900bbd43-dc0b-4383-a372-aa6e6c414227",
+///     "id": "663c5084-a254-4040-8ad3-51f2a3c1a77c",
+///     "answer": "Hi",
+///     "created_at": 1705398420
 /// }\n\n
 /// </code>
 /// 除了event字段，其他字段由event字段内容决定。
@@ -36,7 +37,14 @@ namespace DifySharp;
 [Serializable]
 public record ChunkCompletionResponseBody
 {
+    /// <summary>
+    /// 每个chunk的前缀
+    /// </summary>
     public const string CHUNK_PREFIX = "data: ";
+    
+    /// <summary>
+    /// 每个chunk的后缀
+    /// </summary>
     public const string CHUNK_SUFFIX = "\n\n";
 
     /// <summary>
@@ -57,7 +65,7 @@ public record ChunkCompletionResponseBody
     /// <item><description>ping</description></item>
     /// </list>
     /// </summary>
-    public string? Event { get; set; }
+    public virtual string? Event => "not_defined";
 }
 
 /*
@@ -74,6 +82,8 @@ public record ChunkCompletionResponseBody
 [Serializable]
 public record MessageEvent : ChunkCompletionResponseBody
 {
+    public override string? Event => "message";
+
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -106,6 +116,9 @@ public record MessageEvent : ChunkCompletionResponseBody
 [Serializable]
 public record AgentMessageEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "agent_message";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -153,6 +166,9 @@ public record AgentMessageEvent : ChunkCompletionResponseBody
 /// </summary>
 public record AgentThoughtEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "agent_thought";
+    
     /// <summary>
     /// agent_thought ID，每一轮Agent迭代都会有一个唯一的id
     /// </summary>
@@ -229,6 +245,9 @@ public record AgentThoughtEvent : ChunkCompletionResponseBody
 [Serializable]
 public record MessageFileEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "message_file";
+    
     /// <summary>
     /// 文件唯一ID
     /// </summary>
@@ -270,6 +289,9 @@ public record MessageFileEvent : ChunkCompletionResponseBody
 [Serializable]
 public record MessageEndEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "message_end";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -313,6 +335,9 @@ public record MessageEndEvent : ChunkCompletionResponseBody
 [Serializable]
 public record MessageReplaceEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "message_replace";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -345,6 +370,9 @@ public record MessageReplaceEvent : ChunkCompletionResponseBody
 [Serializable]
 public record WorkflowStartedEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "workflow_started";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -394,6 +422,9 @@ public record WorkflowStartedEvent : ChunkCompletionResponseBody
 [Serializable]
 public record NodeStartedEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "node_started";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -460,6 +491,9 @@ public record NodeStartedEvent : ChunkCompletionResponseBody
 [Serializable]
 public record NodeFinishedEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "node_finished";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -546,6 +580,9 @@ public record NodeFinishedEvent : ChunkCompletionResponseBody
 [Serializable]
 public record WorkflowFinishedEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "workflow_finished";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -627,6 +664,9 @@ public record WorkflowFinishedEvent : ChunkCompletionResponseBody
 [Serializable]
 public record ErrorEvent : ChunkCompletionResponseBody
 {
+    
+    public override string? Event => "error";
+    
     /// <summary>
     /// 任务 ID，用于请求跟踪和下方的停止响应接口
     /// </summary>
@@ -657,6 +697,9 @@ public record ErrorEvent : ChunkCompletionResponseBody
 /// 每 10s 一次的 ping 事件，保持连接存活。
 /// </summary>
 [Serializable]
-public record PingEvent : ChunkCompletionResponseBody;
+public record PingEvent : ChunkCompletionResponseBody
+{
+    public override string? Event => "ping";
+}
 
 #endregion

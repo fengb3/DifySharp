@@ -1,3 +1,4 @@
 {
-  "KNOWLEDGE_BASE_API_KEY": "dataset-jsSnTaaa5ds48ACxGztnwgw4" // 换成你的知识库API Key
+  "KNOWLEDGE_BASE_API_KEY": "<api-key>" // 换成你的知识库API Key
+  "WORKFLOW_API_KEY": "<api-key>"
 }

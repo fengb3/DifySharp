@@ -6,10 +6,7 @@ public record CreateByText
     ///  creates a new document through text based on this knowledge.
     /// </summary>
     /// <param name="Name">Document name</param>
-    /// <param name="Content">Document content</param>
-    /// <param name="IndexTechnique">Index mode</param>
     /// <param name="DocForm">Format of indexed content</param>
-    /// <param name="DocLang">In Q and A mode, specify the language of the document, for example: English, Chinese</param>
     /// <param name="ProcessRule"></param>
     /// <param name="RetrievalModel">Retrieval model</param>
     /// <param name="EmbeddingMode">Embedding model name</param>

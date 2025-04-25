@@ -9,7 +9,7 @@ using WebApiClientCore.Parameters;
 
 namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
 
-public class DocumentApiTestFixture : KnowledgeBaseApiTestFixture
+public class DocumentApiTestFixture : ApiTestFixture
 {
     public Dataset             Dataset { get; private set; }
     public KnowledgeBaseClient Client  { get; }

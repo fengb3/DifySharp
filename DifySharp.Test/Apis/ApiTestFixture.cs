@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace DifySharp.Test.Apis.KnowledgeBaseApiTest;
+namespace DifySharp.Test.Apis;
 
-public abstract class KnowledgeBaseApiTestFixture : IDisposable
+public abstract class ApiTestFixture : IDisposable
 {
 	protected IServiceProvider ServiceProvider => _scope.ServiceProvider;
 	private   IServiceScope    _scope;
 
-	public KnowledgeBaseApiTestFixture()
+	public ApiTestFixture()
 	{
 		_scope = Startup.ServiceProvider.CreateScope();
 	}

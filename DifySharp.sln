@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifySharp.Demo.AspNet", "Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifySharp.Demo.Console", "DifySharp.Demo.Console\DifySharp.Demo.Console.csproj", "{C0B0B40A-0BB7-41A1-A762-713EC07EA19F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{9C86F747-7339-4681-B8A8-3BBBABDA8D0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{C0B0B40A-0BB7-41A1-A762-713EC07EA19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0B0B40A-0BB7-41A1-A762-713EC07EA19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0B0B40A-0BB7-41A1-A762-713EC07EA19F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5AC346C7-0BD1-45E2-BF00-49AAC2A66423} = {9C86F747-7339-4681-B8A8-3BBBABDA8D0B}
+		{C0B0B40A-0BB7-41A1-A762-713EC07EA19F} = {9C86F747-7339-4681-B8A8-3BBBABDA8D0B}
 	EndGlobalSection
 EndGlobal

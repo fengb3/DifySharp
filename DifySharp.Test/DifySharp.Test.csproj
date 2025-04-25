@@ -35,8 +35,4 @@
         </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Apis\WorkflowApiTest\" />
-    </ItemGroup>
-
 </Project>

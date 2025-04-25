@@ -6,7 +6,7 @@
 public enum DocForm
 {
     /// <summary>
-    /// Text documents are directly embedded; <see cref="IndexTechnique.Economy"/> mode defaults to using this form
+    /// Text documents are directly embedded; <see cref="IndexingTechnique.Economy"/> mode defaults to using this form
     /// </summary>
     TextModel,
 

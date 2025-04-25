@@ -10,15 +10,16 @@ public class DifyAuthAttribute : ApiFilterAttribute
 {
     public override Task OnRequestAsync(ApiRequestContext context)
     {
-        var x         = context.HttpContext.ServiceProvider.GetRequiredService<IApiKeyProvider>();
-        var tokenType = "Bearer";
-        var token     = x.ApiKey;
+        var apiKeyProvider = context.HttpContext.ServiceProvider.GetRequiredService<IApiKeyProvider>();
+        var tokenType      = "Bearer";
+        var token          = apiKeyProvider.ApiKey;
         context.HttpContext.RequestMessage.Headers.Authorization = new AuthenticationHeaderValue(tokenType, token);
         return Task.CompletedTask;
     }
 
-    public override async Task OnResponseAsync(ApiResponseContext context)
+    public override Task OnResponseAsync(ApiResponseContext context)
     {
+        return Task.CompletedTask;
         // var logger       = context.HttpContext.ServiceProvider.GetRequiredService<ILogger<DifyAuthAttribute>>();
         // var responseBody = await context.HttpContext.ResponseMessage.Content?.ReadAsStringAsync();
         // // context.HttpContext.ResponseMessage.Content.

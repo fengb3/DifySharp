@@ -5,10 +5,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DifySharp.Apis;
 using DifySharp.Chat.ChatMessages;
+using DifySharp.Workflow;
 
 namespace DifySharp.Extensions;
 
-public static class ChatMessageExtension
+public static class ApiExtensions
 {
     /// <summary>
     /// the JsonSerializerOptions instance for JSON serialization and deserialization.
@@ -96,7 +97,66 @@ public static class ChatMessageExtension
 
             Debug.Assert(chunk != null, nameof(chunk) + " != null");
 
-            chunk.Event = chunk.GetType().Name;
+            // chunk.Event = chunk.GetType().Name;
+
+            yield return chunk;
+        }
+    }
+
+
+    public static async Task<Run.ResponseBody> PostWorkflowsRunBlocking(this IWorkflowApi api,
+        Run.RequestBody                                                                  requestBody)
+    {
+        requestBody.ResponseMode = ApplicationResponseMode.Blocking;
+
+        var httpResponseMessage = await api.PostWorkflowsRun(requestBody);
+        
+        if (!httpResponseMessage.IsSuccessStatusCode)
+        {
+            var msg = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            throw new HttpRequestException(msg);
+        }
+        
+        var result =
+            await httpResponseMessage.Content.ReadFromJsonAsync<Run.ResponseBody>(JsonOptions);
+
+        Debug.Assert(result != null, nameof(result) + " != null");
+
+        return result;
+    }
+    
+    public static async IAsyncEnumerable<ChunkCompletionResponseBody> PostWorkflowsRunStreaming(this IWorkflowApi api,
+        Run.RequestBody                                                                  requestBody)
+    {
+        requestBody.ResponseMode = ApplicationResponseMode.Streaming;
+
+        var httpResponseMessage = await api.PostWorkflowsRun(requestBody);
+
+        if (!httpResponseMessage.IsSuccessStatusCode)
+        {
+            var msg = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            throw new HttpRequestException(msg);
+        }
+
+        var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+        var reader = new StreamReader(stream);
+
+        const string prefix = ChunkCompletionResponseBody.CHUNK_PREFIX;
+
+        while (await reader.ReadLineAsync() is { } line)
+        {
+            if (!line.StartsWith(prefix)) continue;
+
+            var json = line[prefix.Length..];
+
+            var chunk = JsonSerializer.Deserialize<ChunkCompletionResponseBody>(json, JsonOptions);
+
+            Debug.Assert(chunk != null, nameof(chunk) + " != null");
+
+            // chunk.Event = chunk.GetType().Name;
 
             yield return chunk;
         }
