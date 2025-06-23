@@ -1,9 +1,15 @@
-﻿namespace DifySharp.KnowledgeBase.Chunk;
+﻿using System.Text.Json.Serialization;
+
+namespace DifySharp.KnowledgeBase.Chunk;
 
 /// <summary>
 /// Delete a chunk in document 
 /// </summary>
 public record Delete
 {
-    public record ResponseBody(string Result);
+    public class ResponseBody
+    {
+        [JsonPropertyName("result")]
+        public string? Result { get; set; } = "success";
+    }
 }

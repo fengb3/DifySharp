@@ -151,7 +151,7 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
         return await Api.GetIndexingStatus(datasetId, batch);
     }
 
-    public async Task<Delete.ResponseBody> DeleteDocument(string datasetId, string documentId)
+    public async Task<HttpResponseMessage> DeleteDocument(string datasetId, string documentId)
     {
         return await Api.DeleteDocument(datasetId, documentId);
     }
@@ -176,7 +176,7 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
         return await Api.GetSegments(datasetId, documentId);
     }
 
-    public async Task<KnowledgeBase.Chunk.Delete.ResponseBody> DeleteSegments(string datasetId, string documentId,
+    public async Task<HttpResponseMessage> DeleteSegments(string datasetId, string documentId,
         string                                                                       segmentId)
     {
         return await Api.DeleteSegments(datasetId, documentId, segmentId);

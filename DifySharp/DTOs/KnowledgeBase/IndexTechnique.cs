@@ -1,4 +1,6 @@
-﻿namespace DifySharp.KnowledgeBase;
+﻿using System.Text.Json.Serialization;
+
+namespace DifySharp.KnowledgeBase;
 
 /// <summary>
 /// index mode
@@ -8,10 +10,12 @@ public enum IndexingTechnique
     /// <summary>
     /// High quality
     /// </summary>
+    [JsonPropertyName("high_quality")]
     HighQuality = 0,
 
     /// <summary>
     /// Economy
     /// </summary>
+    [JsonPropertyName("economy")]
     Economy = 1
 }

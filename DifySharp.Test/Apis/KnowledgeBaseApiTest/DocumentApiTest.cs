@@ -93,15 +93,17 @@ public class DocumentApiTest(
         var response = await Client.PostCreateDocumentByTextAsync(
             Dataset.Id,
             new CreateByText.RequestBody(
-                $"Test Document {uuid}",
-                "Test Content",
-                IndexingTechnique.Economy,
-                DocForm.TextModel,
-                "",
-                _defaultProcessRule,
-                _defaultRetrievalModel,
-                "",
-                ""
+                Name: $"Test Document {uuid}",
+                Text: "Test Content",
+                DocType: null,
+                DocMetadata: null,
+                IndexingTechnique: IndexingTechnique.Economy,
+                DocForm: DocForm.TextModel,
+                DocLanguage: "",
+                ProcessRule: _defaultProcessRule,
+                RetrievalModel: _defaultRetrievalModel,
+                EmbeddingModel: "",
+                EmbeddingModelProvider: ""
             ));
 
 
@@ -156,7 +158,7 @@ public class DocumentApiTest(
         foreach (var doc in Documents)
         {
             var response = await Client.DeleteDocument(Dataset.Id, doc.Id);
-            Assert.Equal("success", response.Result);
+            Assert.True(response.IsSuccessStatusCode);
         }
 
         var documents = await Client.GetDocuments(Dataset.Id);

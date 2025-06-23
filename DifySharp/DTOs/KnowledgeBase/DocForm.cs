@@ -1,4 +1,6 @@
-﻿namespace DifySharp.KnowledgeBase;
+﻿using System.Text.Json.Serialization;
+
+namespace DifySharp.KnowledgeBase;
 
 /// <summary>
 /// Format of indexed content
@@ -8,15 +10,18 @@ public enum DocForm
     /// <summary>
     /// Text documents are directly embedded; <see cref="IndexingTechnique.Economy"/> mode defaults to using this form
     /// </summary>
+    [JsonPropertyName("text_model")]
     TextModel,
 
     /// <summary>
     /// Parent-child mode
     /// </summary>
+    [JsonPropertyName("hierarchical_model")]
     HierarchicalModel,
 
     /// <summary>
     /// Q and A Mode: Generates Q and A pairs for segmented documents and then embeds the questions
     /// </summary>
+    [JsonPropertyName("qa_model")]
     QaModel,
 }

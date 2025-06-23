@@ -34,12 +34,14 @@ public class ChunkApiTestFixture : ApiTestFixture
 
 		// crate a document
 		var createDocRequestBody = new CreateByText.RequestBody(
-			$"Chunk Api Test Document {uuid}",
-			"Test Content \n\n Test Content \n\n Test Content",
-			IndexingTechnique.Economy,
-			DocForm.TextModel,
-			"",
-			new ProcessRule(
+			Name: $"Chunk Api Test Document {uuid}",
+			Text: "Test Content \n\n Test Content \n\n Test Content",
+			DocType: null,
+			DocMetadata: null,
+			IndexingTechnique: IndexingTechnique.Economy,
+			DocForm: DocForm.TextModel,
+			DocLanguage: "",
+			ProcessRule: new ProcessRule(
 				"automatic",
 				new Rules(
 					[
@@ -64,7 +66,7 @@ public class ChunkApiTestFixture : ApiTestFixture
 					)
 				)
 			),
-			new CreateByText.RetrievalModel(
+			RetrievalModel: new CreateByText.RetrievalModel(
 				CreateByText.SearchMethod.HybridSearch,
 				false,
 				new CreateByText.RerankingModel(
@@ -75,8 +77,8 @@ public class ChunkApiTestFixture : ApiTestFixture
 				false,
 				0.9f
 			),
-			"",
-			""
+			EmbeddingModel: "",
+			EmbeddingModelProvider: ""
 		);
 
 		Document = Client.PostCreateDocumentByTextAsync(

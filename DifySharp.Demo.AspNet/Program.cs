@@ -33,12 +33,14 @@ knowledgeGroup.MapGet("create_file_by_text", async (IServiceProvider sp) =>
     var response = await api.PostCreateDocumentByTextAsync(
         "<your-dataset-id>", // add a dataset id here
         new CreateByText.RequestBody(
-            $"Test Document {uuid}",
-            "Test Content",
-            IndexingTechnique.Economy,
-            DocForm.TextModel,
-            "",
-            new ProcessRule(
+            Name: $"Test Document {uuid}",
+            Text: "Test Content",
+            DocType: null,
+            DocMetadata: null,
+            IndexingTechnique: IndexingTechnique.Economy,
+            DocForm: DocForm.TextModel,
+            DocLanguage: "",
+            ProcessRule: new ProcessRule(
                 "automatic",
                 new Rules(
                     [
@@ -63,7 +65,7 @@ knowledgeGroup.MapGet("create_file_by_text", async (IServiceProvider sp) =>
                     )
                 )
             ),
-            new CreateByText.RetrievalModel(
+            RetrievalModel: new CreateByText.RetrievalModel(
                 CreateByText.SearchMethod.HybridSearch,
                 false,
                 new CreateByText.RerankingModel(
@@ -74,8 +76,8 @@ knowledgeGroup.MapGet("create_file_by_text", async (IServiceProvider sp) =>
                 false,
                 0.9f
             ),
-            "",
-            ""
+            EmbeddingModel: "",
+            EmbeddingModelProvider: ""
         ));
 
     var document = response.Document;

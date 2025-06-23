@@ -132,7 +132,7 @@ namespace DifySharp.KnowledgeBase.Document
         /// <param name="documentId"></param>
         /// <returns></returns>
         [HttpDelete("/v1/datasets/{datasetId}/documents/{documentId}")]
-        public Task<Delete.ResponseBody> DeleteDocument(
+        public Task<HttpResponseMessage> DeleteDocument(
             string datasetId,
             string documentId
         );
@@ -191,9 +191,9 @@ namespace DifySharp.KnowledgeBase.Chunk
         /// <param name="datasetId">The unique identifier for the dataset.</param>
         /// <param name="documentId">The unique identifier for the document within the dataset.</param>
         /// <param name="segmentId">The unique identifier for the segment to be deleted.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the response body of the delete operation.</returns>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the HTTP response message.</returns>
         [HttpDelete("/v1/datasets/{datasetId}/documents/{documentId}/segments/{segmentId}")]
-        public Task<Delete.ResponseBody> DeleteSegments(
+        public Task<HttpResponseMessage> DeleteSegments(
             string datasetId,
             string documentId,
             string segmentId
