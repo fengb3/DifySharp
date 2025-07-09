@@ -28,9 +28,45 @@ public class DocumentApiTestFixture : ApiTestFixture
 
     public override void Dispose()
     {
-        Client.DeleteDataset(Dataset.Id).GetAwaiter().GetResult();
-        Client.Dispose();
-        base.Dispose();
+        try
+        {
+            // 检测是否在CI环境中运行
+            var isCI = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("CI")) ||
+                      !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")) ||
+                      !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AZURE_PIPELINES")) ||
+                      !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("JENKINS_URL"));
+            
+            if (isCI)
+            {
+                Console.WriteLine($"Detected CI environment. Attempting to clean up dataset {Dataset.Id}...");
+            }
+            
+            // 尝试删除数据集
+            Client.DeleteDataset(Dataset.Id).GetAwaiter().GetResult();
+            
+            if (isCI)
+            {
+                Console.WriteLine($"Successfully deleted dataset {Dataset.Id} in CI environment.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // 在CI环境中，删除操作可能因为权限限制而失败
+            // 记录错误但不抛出异常，避免影响测试结果
+            Console.WriteLine($"Warning: Failed to delete dataset {Dataset.Id} during test cleanup: {ex.Message}");
+            
+            // 如果是403错误，这通常是权限问题，不应该影响测试
+            if (ex.Message.Contains("403") || ex.Message.Contains("FORBIDDEN"))
+            {
+                Console.WriteLine("This is likely due to API key permissions in CI environment. Continuing with test cleanup.");
+                Console.WriteLine("Suggestion: Check if the API key has delete permissions for datasets.");
+            }
+        }
+        finally
+        {
+            Client.Dispose();
+            base.Dispose();
+        }
     }
 }
 
