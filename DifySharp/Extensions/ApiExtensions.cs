@@ -38,7 +38,7 @@ public static class ApiExtensions
         //     throw new ArgumentException(
         //         $"ResponseMode must be Blocking when calling {nameof(PostChatMessageBlocking)}");
 
-        requestBody.ApplicationResponseMode = ApplicationResponseMode.Blocking;
+        requestBody.ResponseMode = ApplicationResponseMode.Blocking;
 
         var httpResponseMessage = await chatApi.PostChatMessages(requestBody);
 
@@ -70,7 +70,7 @@ public static class ApiExtensions
         ChatMessage.RequestBody requestBody
     )
     {
-        requestBody.ApplicationResponseMode = ApplicationResponseMode.Streaming;
+        requestBody.ResponseMode = ApplicationResponseMode.Streaming;
 
         var httpResponseMessage = await api.PostChatMessages(requestBody);
 

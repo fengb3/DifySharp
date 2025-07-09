@@ -15,13 +15,14 @@ public class Startup
         ReadEnvironmentVariables();
 
         var knowledgeApiKey    = Environment.GetEnvironmentVariable("KNOWLEDGE_BASE_API_KEY");
-        var workflowApiTestKey = Environment.GetEnvironmentVariable("WORKFLOW_API_TEST_KEY");
-        services.AddDifySharp(option =>
-        {
+        var workflowApiTestKey = Environment.GetEnvironmentVariable("WORKFLOW_API_KEY");
+        var chatApiKey         = Environment.GetEnvironmentVariable("CHAT_API_KEY");
+        services.AddDifySharp(option => {
             option.Secrets =
             [
                 new DifyApiSecret(knowledgeApiKey!, "knowledge", DifyApiType.KNOWLEDGE_BASE),
-                new DifyApiSecret(workflowApiTestKey!, "workflow", DifyApiType.WORKFLOW)
+                new DifyApiSecret(workflowApiTestKey!, "workflow", DifyApiType.WORKFLOW),
+                new DifyApiSecret(chatApiKey, "chat", DifyApiType.CHAT)
             ];
         });
         services.AddLogging(lb => lb.AddXunitOutput());
