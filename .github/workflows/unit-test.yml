@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       KNOWLEDGE_BASE_API_KEY: ${{ secrets.KNOWLEDGE_BASE_API_KEY }}
+      WORKFLOW_API_KEY: ${{ secrets.WORKFLOW_API_KEY }}
+      CHAT_API_KEY: ${{ secrets.CHAT_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
