@@ -1,10 +1,8 @@
 name: Publish to NuGet
 
 on:
-  #push:
-  #  branches: [ release ]
-  pull_request:
-    branches: [ release ]
+  release:
+    types: [created]
 
 jobs:
   publish:
@@ -19,9 +17,9 @@ jobs:
       with:
         dotnet-version: '8.0.x'
      
-    - name: Get Version
+    - name: Get Version from Release Tag
       id: get_version
-      run: echo "##[set-output name=VERSION;]$(grep -oPm1 "(?<=<Version>)[^<]+" DifySharp/DifySharp.csproj)"
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
     - name: Restore dependencies
       run: dotnet restore
@@ -33,15 +31,4 @@ jobs:
       run: dotnet pack --configuration Release --output ./artifacts
 
     - name: Push to NuGet
-      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: 'v${{ steps.get_version.outputs.VERSION }}'
-        release_name: 'Release v${{ steps.get_version.outputs.VERSION }}'
-        draft: false
-        prerelease: false
+      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
