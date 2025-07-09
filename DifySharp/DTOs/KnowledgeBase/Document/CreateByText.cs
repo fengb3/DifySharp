@@ -13,7 +13,7 @@ public record CreateByText
     /// <param name="DocMetadata">Document metadata (required if doc_type is provided)</param>
     /// <param name="IndexingTechnique">Indexing technique</param>
     /// <param name="DocForm">Format of indexed content</param>
-    /// <param name="DocLanguage">Document language for Q&A mode</param>
+    /// <param name="DocLanguage">Document language for Q and A mode</param>
     /// <param name="ProcessRule">Processing rules</param>
     /// <param name="RetrievalModel">Retrieval model (required when knowledge base has no parameters set for first upload)</param>
     /// <param name="EmbeddingModel">Embedding model name</param>

@@ -3,6 +3,7 @@ using DifySharp.Chat.Application;
 using DifySharp.Chat.ChatMessages;
 using DifySharp.Chat.Conversations;
 using DifySharp.Chat.Messages;
+using WebApiClientCore;
 using WebApiClientCore.Attributes;
 
 namespace DifySharp.Apis
@@ -23,7 +24,7 @@ namespace DifySharp.Apis
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost("files/upload")]
-        public Task<HttpResponseMessage> PostFilesUpload(
+        public ITask<HttpResponseMessage> PostFilesUpload(
             [FormDataContent] string user,
             FileInfo                 file
         );
@@ -37,7 +38,7 @@ namespace DifySharp.Apis
         /// <param name="user">User identifier, defined by the developer's rules, must be unique within the application.</param>
         /// <returns></returns>
         [HttpPost("/v1/audio-to-text")]
-        public Task<HttpResponseMessage> PostAudioToText(
+        public ITask<HttpResponseMessage> PostAudioToText(
             FileInfo                 file,
             [FormDataContent] string user
         );
@@ -48,7 +49,7 @@ namespace DifySharp.Apis
         /// <param name="requestBody"></param>
         /// <returns></returns>
         [HttpPost("/v1/text-to-audio")]
-        public Task<HttpResponseMessage> PostTextToAudio(
+        public ITask<HttpResponseMessage> PostTextToAudio(
             [JsonContent] object requestBody
         );
     }
@@ -65,7 +66,7 @@ namespace DifySharp.Chat.ChatMessages
         /// <param name="requestBody"></param>
         /// <returns></returns>
         [HttpPost("/v1/chat-messages")]
-        public Task<HttpResponseMessage> PostChatMessages(
+        public ITask<HttpResponseMessage> PostChatMessages(
             [JsonContent] ChatMessage.RequestBody requestBody
         );
 
@@ -78,7 +79,7 @@ namespace DifySharp.Chat.ChatMessages
         /// <param name="requestBody">request body</param>
         /// <returns></returns>
         [HttpPost("/v1/chat-messages/{taskId}/stop")]
-        public Task<Stop.ResponseBody> PostChatMessagesStop(
+        public ITask<Stop.ResponseBody> PostChatMessagesStop(
             string           taskId,
             Stop.RequestBody requestBody
         );
@@ -97,7 +98,7 @@ namespace DifySharp.Chat.Messages
         /// <param name="requestBody"></param>
         /// <returns></returns>
         [HttpPost("/v1/messages/{messageId}/feedbacks")]
-        public Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(
+        public ITask<PostFeedback.ResponseBody> PostMessagesFeedbacks(
             string                                 messageId,
             [JsonContent] PostFeedback.RequestBody requestBody
         );
@@ -111,7 +112,7 @@ namespace DifySharp.Chat.Messages
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpGet("/v1/messages/{messageId}/suggested")]
-        public Task<GetSuggested.ResponseBody> GetMessagesSuggested(
+        public ITask<GetSuggested.ResponseBody> GetMessagesSuggested(
             string             messageId,
             [PathQuery] string user
         );
@@ -128,7 +129,7 @@ namespace DifySharp.Chat.Messages
         /// <param name="limit"></param>
         /// <returns></returns>
         [HttpGet("/v1/messages")]
-        public Task<Get.ResponseBody> GetMessages(
+        public ITask<Get.ResponseBody> GetMessages(
             [PathQuery] string conversation_id,
             [PathQuery] string user,
             [PathQuery] string first_id,
@@ -169,7 +170,7 @@ namespace DifySharp.Chat.Conversations
         /// </param>
         /// <returns></returns>
         [HttpGet("/v1/conversations")]
-        public Task<Get.ResponseBody> GetConversations(
+        public ITask<Get.ResponseBody> GetConversations(
             [PathQuery] string  user,
             [PathQuery] string? last_id = null,
             [PathQuery] int?    limit   = null,
@@ -184,7 +185,7 @@ namespace DifySharp.Chat.Conversations
         /// <param name="requestBody"></param>
         /// <returns></returns>
         [HttpDelete("/v1/conversations/{conversationId}")]
-        public Task<Delete.RequestBody> DeleteConversations(
+        public ITask<Delete.RequestBody> DeleteConversations(
             string             conversationId,
             Delete.RequestBody requestBody
         );
@@ -197,7 +198,7 @@ namespace DifySharp.Chat.Conversations
         /// <param name="requestBody"></param>
         /// <returns></returns>
         [HttpPost("/v1/conversations/{conversationId}/name")]
-        public Task<Conversation> PostRenameConversation(
+        public ITask<Conversation> PostRenameConversation(
             string                           conversationId,
             [JsonContent] Rename.RequestBody requestBody
         );
@@ -214,7 +215,7 @@ namespace DifySharp.Chat.Application
         /// </summary>
         /// <returns></returns>
         [HttpGet("/v1/info")]
-        public Task<Basic.ResponseBody> GetInfo();
+        public ITask<Basic.ResponseBody> GetInfo();
 
         /// <summary>
         /// # Get Application Parameters Information
@@ -222,7 +223,7 @@ namespace DifySharp.Chat.Application
         /// </summary>
         /// <returns></returns>
         [HttpGet("/v1/parameters")]
-        public Task<Parameters.ResponseBody> GetParameters();
+        public ITask<Parameters.ResponseBody> GetParameters();
 
         /// <summary>
         /// Get Application Meta Information
@@ -230,6 +231,6 @@ namespace DifySharp.Chat.Application
         /// </summary>
         /// <returns></returns>
         [HttpGet("/v1/meta")]
-        public Task<Meta.ResponseBody> GetMeta();
+        public ITask<Meta.ResponseBody> GetMeta();
     }
 }

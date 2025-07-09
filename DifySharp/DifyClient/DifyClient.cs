@@ -9,6 +9,7 @@ using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
 using DifySharp.Workflow;
 using Microsoft.Extensions.DependencyInjection;
+using WebApiClientCore;
 using WebApiClientCore.Parameters;
 using Basic = DifySharp.Workflow.Application.Basic;
 using Create = DifySharp.KnowledgeBase.Dataset.Create;
@@ -51,7 +52,7 @@ internal class DifyClient<T> : IDisposable where T : notnull
             sp = services.BuildServiceProvider();
         }
 
-        ServiceScope                                                 = sp.CreateScope();
+        ServiceScope = sp.CreateScope();
         ServiceProvider.GetRequiredService<IApiKeyProvider>().ApiKey = difyApiSecret.SecretKey;
     }
 
@@ -120,28 +121,28 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
     }
 
     public async Task<CreateByText.ResponseBody> PostCreateDocumentByTextAsync(
-        string                   datasetId,
+        string datasetId,
         CreateByText.RequestBody body)
     {
         return await Api.PostCreateDocumentByTextAsync(datasetId, body);
     }
 
     public async Task<CreateByFile.ResponseBody> PostCreateDocumentByFileAsync(
-        string            datasetId,
+        string datasetId,
         CreateByFile.Data data,
-        FormDataFile      file)
+        FormDataFile file)
     {
         return await Api.PostCreateDocumentByFileAsync(datasetId, data, file);
     }
 
     public async Task<UpdateByText.ResponseBody> PostUpdateDocumentByTextAsync(
-        string                   datasetId,
-        string                   documentId,
+        string datasetId,
+        string documentId,
         UpdateByText.RequestBody body
     ) => await Api.PostUpdateDocumentByTextAsync(datasetId, documentId, body);
 
     public async Task<UpdateByFile.ResponseBody> PostUpdateDocumentByFileAsync(string datasetId, string documentId,
-        UpdateByFile.RequestBody                                                      body)
+        UpdateByFile.RequestBody body)
     {
         return await Api.PostUpdateDocumentByFileAsync(datasetId, documentId, body);
     }
@@ -157,7 +158,7 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
     }
 
     public async Task<KnowledgeBase.Document.Get.ResponseBody> GetDocuments(string datasetId, int page = 1,
-        int                                                                        limit = 20)
+        int limit = 20)
     {
         return await Api.GetDocuments(datasetId, page, limit);
     }
@@ -177,13 +178,13 @@ public class KnowledgeBaseClient : DifyClientProxy<IKnowledgeBaseApi>, IKnowledg
     }
 
     public async Task<HttpResponseMessage> DeleteSegments(string datasetId, string documentId,
-        string                                                                       segmentId)
+        string segmentId)
     {
         return await Api.DeleteSegments(datasetId, documentId, segmentId);
     }
 
     public async Task<HttpResponseMessage> PostUpdateSegment(string datasetId, string documentId, string segmentId,
-        object                                                      body)
+        object body)
     {
         return await Api.PostUpdateSegment(datasetId, documentId, segmentId, body);
     }
@@ -246,7 +247,7 @@ public class CompletionClient : DifyClientProxy<ICompletionApi>, ICompletionApi
 
     /// <inheritdoc />
     public async Task<PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
-        PostFeedback.RequestBody                                              requestBody)
+        PostFeedback.RequestBody requestBody)
     {
         return await Api.PostMessagesFeedbacks(messageId, requestBody);
     }
@@ -285,94 +286,94 @@ public class ChatClient : DifyClientProxy<IChatApi>, IChatApi
     #region ApiCalling
 
     /// <inheritdoc />
-    public async Task<Chat.Application.Basic.ResponseBody> GetInfo()
+    public ITask<Chat.Application.Basic.ResponseBody> GetInfo()
     {
-        return await Api.GetInfo();
+        return Api.GetInfo();
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Application.Parameters.ResponseBody> GetParameters()
+    public ITask<Chat.Application.Parameters.ResponseBody> GetParameters()
     {
-        return await Api.GetParameters();
+        return Api.GetParameters();
     }
 
     /// <inheritdoc />
-    public async Task<Meta.ResponseBody> GetMeta()
+    public ITask<Meta.ResponseBody> GetMeta()
     {
-        return await Api.GetMeta();
+        return Api.GetMeta();
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Conversations.Get.ResponseBody> GetConversations(
-        string  user,
+    public ITask<Chat.Conversations.Get.ResponseBody> GetConversations(
+        string user,
         string? last_id = null,
-        int?    limit   = null,
+        int? limit = null,
         string? sort_by = null)
     {
-        return await Api.GetConversations(user, last_id, limit, sort_by);
+        return Api.GetConversations(user, last_id, limit, sort_by);
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Conversations.Delete.RequestBody> DeleteConversations(string conversationId,
-        Chat.Conversations.Delete.RequestBody                                           requestBody)
+    public ITask<Chat.Conversations.Delete.RequestBody> DeleteConversations(string conversationId,
+        Chat.Conversations.Delete.RequestBody requestBody)
     {
-        return await Api.DeleteConversations(conversationId, requestBody);
+        return Api.DeleteConversations(conversationId, requestBody);
     }
 
     /// <inheritdoc />
-    public async Task<Conversation> PostRenameConversation(string conversationId, Rename.RequestBody requestBody)
+    public ITask<Conversation> PostRenameConversation(string conversationId, Rename.RequestBody requestBody)
     {
-        return await Api.PostRenameConversation(conversationId, requestBody);
+        return Api.PostRenameConversation(conversationId, requestBody);
     }
 
     /// <inheritdoc />
-    public async Task<HttpResponseMessage> PostChatMessages(ChatMessage.RequestBody requestBody)
+    public ITask<HttpResponseMessage> PostChatMessages(ChatMessage.RequestBody requestBody)
     {
-        return await Api.PostChatMessages(requestBody);
+        return Api.PostChatMessages(requestBody);
     }
 
     /// <inheritdoc />
-    public async Task<Stop.ResponseBody> PostChatMessagesStop(string taskId, Stop.RequestBody requestBody)
+    public ITask<Stop.ResponseBody> PostChatMessagesStop(string taskId, Stop.RequestBody requestBody)
     {
-        return await Api.PostChatMessagesStop(taskId, requestBody);
+        return Api.PostChatMessagesStop(taskId, requestBody);
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Messages.PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
-        Chat.Messages.PostFeedback.RequestBody                                              requestBody)
+    public ITask<Chat.Messages.PostFeedback.ResponseBody> PostMessagesFeedbacks(string messageId,
+        Chat.Messages.PostFeedback.RequestBody requestBody)
     {
-        return await Api.PostMessagesFeedbacks(messageId, requestBody);
+        return Api.PostMessagesFeedbacks(messageId, requestBody);
     }
 
     /// <inheritdoc />
-    public async Task<GetSuggested.ResponseBody> GetMessagesSuggested(string messageId, string user)
+    public ITask<GetSuggested.ResponseBody> GetMessagesSuggested(string messageId, string user)
     {
-        return await Api.GetMessagesSuggested(messageId, user);
+        return Api.GetMessagesSuggested(messageId, user);
     }
 
     /// <inheritdoc />
-    public async Task<Chat.Messages.Get.ResponseBody> GetMessages(string conversation_id, string user, string first_id,
-        int                                                              limit)
+    public ITask<Chat.Messages.Get.ResponseBody> GetMessages(string conversation_id, string user, string first_id,
+        int limit)
     {
-        return await Api.GetMessages(conversation_id, user, first_id, limit);
+        return Api.GetMessages(conversation_id, user, first_id, limit);
     }
 
     /// <inheritdoc />
-    public async Task<HttpResponseMessage> PostFilesUpload(string user, FileInfo file)
+    public ITask<HttpResponseMessage> PostFilesUpload(string user, FileInfo file)
     {
-        return await Api.PostFilesUpload(user, file);
+        return Api.PostFilesUpload(user, file);
     }
 
     /// <inheritdoc />
-    public async Task<HttpResponseMessage> PostAudioToText(FileInfo file, string user)
+    public ITask<HttpResponseMessage> PostAudioToText(FileInfo file, string user)
     {
-        return await Api.PostAudioToText(file, user);
+        return Api.PostAudioToText(file, user);
     }
 
     /// <inheritdoc />
-    public async Task<HttpResponseMessage> PostTextToAudio(object requestBody)
+    public ITask<HttpResponseMessage> PostTextToAudio(object requestBody)
     {
-        return await Api.PostTextToAudio(requestBody);
+        return Api.PostTextToAudio(requestBody);
     }
 
     #endregion

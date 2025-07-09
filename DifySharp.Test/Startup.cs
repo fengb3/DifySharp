@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Xunit.DependencyInjection.Logging;
 
 // using Xunit.DependencyInjection.Logging;
@@ -24,6 +25,8 @@ public class Startup
                 new DifyApiSecret(workflowApiTestKey!, "workflow", DifyApiType.WORKFLOW),
                 new DifyApiSecret(chatApiKey, "chat", DifyApiType.CHAT)
             ];
+
+            option.EnableLogging = true;
         });
         services.AddLogging(lb => lb.AddXunitOutput());
 

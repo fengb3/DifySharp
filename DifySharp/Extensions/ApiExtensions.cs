@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using DifySharp.Apis;
 using DifySharp.Chat.ChatMessages;
 using DifySharp.Workflow;
+using WebApiClientCore;
 
 namespace DifySharp.Extensions;
 
@@ -45,8 +46,11 @@ public static class ApiExtensions
         if (!httpResponseMessage.IsSuccessStatusCode)
         {
             var msg = await httpResponseMessage.Content.ReadAsStringAsync();
-
-            throw new HttpRequestException(msg);
+            
+            // 添加更详细的错误信息
+            var detailedError = $"HTTP {(int)httpResponseMessage.StatusCode} {httpResponseMessage.StatusCode}: {msg}";
+            
+            throw new HttpRequestException(detailedError);
         }
 
         var result =
