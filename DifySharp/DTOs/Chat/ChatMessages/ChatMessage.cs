@@ -28,7 +28,7 @@ public static class ChatMessage
         ///		注：Agent模式下不允许blocking。
         /// </para>
         /// </summary>
-        public ApplicationResponseMode ResponseMode { get; internal set; } =
+        public ApplicationResponseMode ResponseMode { get; set; } =
             ApplicationResponseMode.Blocking;
 
         /// <summary>

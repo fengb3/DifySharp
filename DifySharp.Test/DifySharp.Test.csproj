@@ -26,6 +26,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\DifySharp\DifySharp.csproj"/>
+        <ProjectReference Include="..\DifySharp.Cli\DifySharp.Cli.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
