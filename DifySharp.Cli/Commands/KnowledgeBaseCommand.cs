@@ -210,9 +210,48 @@ public static class KnowledgeBaseCommand
         chunksCommand.Add(chunksListCommand);
         chunksCommand.Add(chunksCreateCommand);
 
+        // --- retrieve sub-command ---
+        var retrieveDatasetIdOption = new Option<string>("--dataset-id", "Dataset ID") { IsRequired = true };
+        var queryOption = new Option<string>("--query", "Search query") { IsRequired = true };
+        var topKOption = new Option<int>("--top-k", () => 3, "Number of results to return");
+        var searchMethodOption = new Option<string>("--search-method", () => "semantic_search",
+            "Search method: semantic_search, full_text_search, hybrid_search");
+
+        var retrieveCommand = new Command("retrieve", "Search/retrieve from a dataset")
+        {
+            retrieveDatasetIdOption, queryOption, topKOption, searchMethodOption
+        };
+
+        retrieveCommand.SetHandler((Func<InvocationContext, Task>)(async context =>
+        {
+            var datasetId = context.ParseResult.GetValueForOption(retrieveDatasetIdOption)!;
+            var query = context.ParseResult.GetValueForOption(queryOption)!;
+            var topK = context.ParseResult.GetValueForOption(topKOption);
+            var searchMethod = context.ParseResult.GetValueForOption(searchMethodOption)!;
+            var apiKey = context.ParseResult.GetValueForOption(apiKeyOption)!;
+            var baseUrl = context.ParseResult.GetValueForOption(baseUrlOption)!;
+
+            using var client = new DifyApiClient(apiKey, baseUrl);
+            var body = new Dictionary<string, object>
+            {
+                ["query"] = query,
+                ["retrieval_model"] = new Dictionary<string, object>
+                {
+                    ["search_method"] = searchMethod,
+                    ["reranking_enable"] = false,
+                    ["top_k"] = topK
+                }
+            };
+            var response = await client.PostRawAsync(
+                $"/v1/datasets/{datasetId}/retrieve", body, context.GetCancellationToken());
+            var content = await response.Content.ReadAsStringAsync(context.GetCancellationToken());
+            using var doc = JsonDocument.Parse(content);
+            Console.WriteLine(JsonSerializer.Serialize(doc, DifyApiClient.WriteIndentedOptions));
+        }));
+
         var command = new Command("kb", "Knowledge base operations")
         {
-            datasetsCommand, documentsCommand, chunksCommand
+            datasetsCommand, documentsCommand, chunksCommand, retrieveCommand
         };
 
         return command;
