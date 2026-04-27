@@ -43,3 +43,4 @@ Thumbs.db
 #/DifySharp.Test/TestEnvironmentVariables.json
 DifySharp.Test/TestEnvironmentVariables.json
 .claude/settings.local.json
+build.ps1

@@ -1,6 +1,8 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Text;
 using System.Text.Json;
+using DifySharp.KnowledgeBase;
 using DifySharp.KnowledgeBase.Chunk;
 using DifySharp.KnowledgeBase.Dataset;
 using DifySharp.KnowledgeBase.Document;
@@ -112,10 +114,14 @@ public static class KnowledgeBaseCommand
         // documents create-text
         var docNameOption = new Option<string>("--name", "Document name") { IsRequired = true };
         var docTextOption = new Option<string>("--text", "Document text content") { IsRequired = true };
+        var indexingTechniqueOption = new Option<string?>("--indexing-technique", () => null,
+            "Indexing technique: high_quality or economy");
+        var docFormOption = new Option<string?>("--doc-form", () => null,
+            "Doc form: text_model, hierarchical_model, qa_model");
 
         var docsCreateTextCommand = new Command("create-text", "Create a document from text")
         {
-            datasetIdOption, docNameOption, docTextOption
+            datasetIdOption, docNameOption, docTextOption, indexingTechniqueOption, docFormOption
         };
 
         docsCreateTextCommand.SetHandler((Func<InvocationContext, Task>)(async context =>
@@ -123,11 +129,31 @@ public static class KnowledgeBaseCommand
             var datasetId = context.ParseResult.GetValueForOption(datasetIdOption)!;
             var name = context.ParseResult.GetValueForOption(docNameOption)!;
             var text = context.ParseResult.GetValueForOption(docTextOption)!;
+            var indexingTechniqueStr = context.ParseResult.GetValueForOption(indexingTechniqueOption);
+            var docFormStr = context.ParseResult.GetValueForOption(docFormOption);
             var apiKey = context.ParseResult.GetValueForOption(apiKeyOption)!;
             var baseUrl = context.ParseResult.GetValueForOption(baseUrlOption)!;
 
+            IndexingTechnique? indexingTechnique = indexingTechniqueStr switch
+            {
+                "high_quality" => IndexingTechnique.HighQuality,
+                "economy" => IndexingTechnique.Economy,
+                null => null,
+                _ => throw new ArgumentException($"Invalid indexing technique: {indexingTechniqueStr}")
+            };
+
+            DocForm? docForm = docFormStr switch
+            {
+                "text_model" => DocForm.TextModel,
+                "hierarchical_model" => DocForm.HierarchicalModel,
+                "qa_model" => DocForm.QaModel,
+                null => null,
+                _ => throw new ArgumentException($"Invalid doc form: {docFormStr}")
+            };
+
             using var client = new DifyApiClient(apiKey, baseUrl);
-            var body = new CreateByText.RequestBody(name, text);
+            var body = new CreateByText.RequestBody(name, text,
+                IndexingTechnique: indexingTechnique, DocForm: docForm);
             var result = await client.PostAsync<CreateByText.RequestBody, CreateByText.ResponseBody>(
                 $"/v1/datasets/{datasetId}/document/create_by_text", body, context.GetCancellationToken());
             Console.WriteLine(JsonSerializer.Serialize(result, DifyApiClient.WriteIndentedOptions));
@@ -239,14 +265,20 @@ public static class KnowledgeBaseCommand
                 {
                     ["search_method"] = searchMethod,
                     ["reranking_enable"] = false,
-                    ["top_k"] = topK
+                    ["top_k"] = topK,
+                    ["score_threshold_enabled"] = false
                 }
             };
             var response = await client.PostRawAsync(
                 $"/v1/datasets/{datasetId}/retrieve", body, context.GetCancellationToken());
             var content = await response.Content.ReadAsStringAsync(context.GetCancellationToken());
             using var doc = JsonDocument.Parse(content);
-            Console.WriteLine(JsonSerializer.Serialize(doc, DifyApiClient.WriteIndentedOptions));
+            using var stream = new MemoryStream();
+            using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
+            {
+                doc.WriteTo(writer);
+            }
+            Console.WriteLine(Encoding.UTF8.GetString(stream.ToArray()));
         }));
 
         var command = new Command("kb", "Knowledge base operations")

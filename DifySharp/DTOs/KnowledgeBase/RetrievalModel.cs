@@ -1,4 +1,6 @@
-﻿namespace DifySharp.KnowledgeBase;
+﻿using System.Text.Json.Serialization;
+
+namespace DifySharp.KnowledgeBase;
 
 /// <summary>
 /// Retrieval model
@@ -18,22 +20,12 @@ public record RetrievalModel(
     float         ScoreThreshold
 );
 
+[JsonConverter(typeof(JsonStringEnumConverter<SearchMethod>))]
 public enum SearchMethod
 {
-    /// <summary>
-    /// Semantic search
-    /// </summary>
-    SemanticSearch,
-
-    /// <summary>
-    /// Full-text search
-    /// </summary>
-    FullTextSearch,
-
-    /// <summary>
-    /// Hybrid search
-    /// </summary>
-    HybridSearch
+    [JsonPropertyName("semantic_search")] SemanticSearch,
+    [JsonPropertyName("full_text_search")] FullTextSearch,
+    [JsonPropertyName("hybrid_search")] HybridSearch
 }
 
 /// <summary>

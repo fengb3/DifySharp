@@ -1,4 +1,6 @@
-﻿namespace DifySharp.KnowledgeBase.Dataset;
+﻿using System.Text.Json.Serialization;
+
+namespace DifySharp.KnowledgeBase.Dataset;
 
 public record Create
 {
@@ -27,30 +29,21 @@ public record Create
     /// <summary>
     /// 权限（选填，默认 only_me）
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter<Permission>))]
     public enum Permission
     {
-        /// <summary>
-        /// Only me
-        /// </summary>
-        OnlyMe = 0,
-
-        /// <summary>
-        /// all team members
-        /// </summary>
-        AllTeamMembers = 1,
-
-        /// <summary>
-        /// partial members
-        /// </summary>
-        PartialMembers = 2
+        [JsonPropertyName("only_me")] OnlyMe = 0,
+        [JsonPropertyName("all_team_members")] AllTeamMembers = 1,
+        [JsonPropertyName("partial_members")] PartialMembers = 2
     }
 
     /// <summary>
     /// Provider（选填，默认 vendor）
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter<Provider>))]
     public enum Provider
     {
-        Vendor   = 0,
-        External = 1
+        [JsonPropertyName("vendor")] Vendor = 0,
+        [JsonPropertyName("external")] External = 1
     }
 }

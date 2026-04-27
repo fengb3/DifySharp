@@ -5,6 +5,9 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
+using DifySharp;
+using DifySharp.KnowledgeBase;
+using DifySharp.KnowledgeBase.Document;
 
 namespace DifySharp.Cli;
 
@@ -18,8 +21,19 @@ public class DifyApiClient : IDisposable
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower) },
-        TypeInfoResolver = new DefaultJsonTypeInfoResolver()
+        Converters =
+        {
+            new JsonStringEnumConverter<ApplicationResponseMode>(JsonNamingPolicy.SnakeCaseLower),
+            new JsonStringEnumConverter<IndexingTechnique>(JsonNamingPolicy.SnakeCaseLower),
+            new JsonStringEnumConverter<DocForm>(JsonNamingPolicy.SnakeCaseLower),
+            new JsonStringEnumConverter<CreateByText.SearchMethod>(JsonNamingPolicy.SnakeCaseLower),
+            new JsonStringEnumConverter<CreateByText.DocType>(JsonNamingPolicy.SnakeCaseLower),
+            new JsonStringEnumConverter<DifySharp.KnowledgeBase.Dataset.Create.Permission>(JsonNamingPolicy.SnakeCaseLower),
+            new JsonStringEnumConverter<DifySharp.KnowledgeBase.Dataset.Create.Provider>(JsonNamingPolicy.SnakeCaseLower)
+        },
+        TypeInfoResolver = JsonTypeInfoResolver.Combine(
+            CliJsonContext.Default,
+            new DefaultJsonTypeInfoResolver())
     };
 
     internal static readonly JsonSerializerOptions WriteIndentedOptions = new(JsonOptions)
@@ -39,7 +53,7 @@ public class DifyApiClient : IDisposable
     public async Task<T> GetAsync<T>(string url, CancellationToken ct = default)
     {
         var response = await _httpClient.GetAsync(url, ct);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
         return (await response.Content.ReadFromJsonAsync<T>(JsonOptions, ct))!;
     }
 
@@ -47,28 +61,37 @@ public class DifyApiClient : IDisposable
         CancellationToken ct = default)
     {
         var response = await _httpClient.PostAsJsonAsync(url, body, JsonOptions, ct);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
         return (await response.Content.ReadFromJsonAsync<TResponse>(JsonOptions, ct))!;
     }
 
     public async Task PostAsync<TRequest>(string url, TRequest body, CancellationToken ct = default)
     {
         var response = await _httpClient.PostAsJsonAsync(url, body, JsonOptions, ct);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
     }
 
     public async Task<HttpResponseMessage> PostRawAsync<TRequest>(string url, TRequest body,
         CancellationToken ct = default)
     {
         var response = await _httpClient.PostAsJsonAsync(url, body, JsonOptions, ct);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
         return response;
     }
 
     public async Task DeleteAsync(string url, CancellationToken ct = default)
     {
         var response = await _httpClient.DeleteAsync(url, ct);
-        response.EnsureSuccessStatusCode();
+        await EnsureSuccessAsync(response);
+    }
+
+    private static async Task EnsureSuccessAsync(HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode) return;
+
+        var body = await response.Content.ReadAsStringAsync();
+        throw new HttpRequestException(
+            $"HTTP {(int)response.StatusCode} ({response.ReasonPhrase}): {body}");
     }
 
     public async IAsyncEnumerable<ChunkCompletionResponseBody> PostStreamAsync<TRequest>(

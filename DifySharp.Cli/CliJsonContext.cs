@@ -70,4 +70,6 @@ namespace DifySharp.Cli;
 [JsonSerializable(typeof(KnowledgeBase.SubchunkSegmentation))]
 // Misc
 [JsonSerializable(typeof(object))]
+[JsonSerializable(typeof(Dictionary<string, object>))]
+[JsonSerializable(typeof(JsonDocument))]
 public partial class CliJsonContext : JsonSerializerContext;

@@ -5,6 +5,7 @@ namespace DifySharp.KnowledgeBase;
 /// <summary>
 /// Format of indexed content
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter<DocForm>))]
 public enum DocForm
 {
     /// <summary>

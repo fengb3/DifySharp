@@ -5,6 +5,7 @@ namespace DifySharp.KnowledgeBase;
 /// <summary>
 /// index mode
 /// </summary>
+[JsonConverter(typeof(JsonStringEnumConverter<IndexingTechnique>))]
 public enum IndexingTechnique
 {
     /// <summary>

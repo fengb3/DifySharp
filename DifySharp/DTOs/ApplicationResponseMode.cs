@@ -5,7 +5,7 @@ namespace DifySharp;
 /// <summary>
 /// represents the mode of chat api response
 /// </summary>
-[JsonConverter(typeof(JsonStringEnumConverter))]
+[JsonConverter(typeof(JsonStringEnumConverter<ApplicationResponseMode>))]
 public enum ApplicationResponseMode
 {
     /// <summary>

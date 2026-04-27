@@ -35,6 +35,7 @@ public record CreateByText
     /// <summary>
     /// Document types supported by Dify
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter<DocType>))]
     public enum DocType
     {
         /// <summary>
@@ -122,6 +123,7 @@ public record CreateByText
         float ScoreThreshold = 0.5f
     );
 
+    [JsonConverter(typeof(JsonStringEnumConverter<SearchMethod>))]
     public enum SearchMethod
     {
         /// <summary>
